@@ -1,13 +1,13 @@
 {
   "name": "block-no-verify",
-  "description": "Best-effort guard against bypassing git hooks via git commit/push --no-verify or -n. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Fix the underlying hook failure instead of skipping validation. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
+  "description": "Best-effort guard against bypassing git hooks via git commit/push --no-verify, commit's short -n form, or -c core.hooksPath overrides. On git push, -n means --dry-run and stays allowed. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Fix the underlying hook failure instead of skipping validation. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
   "keywords": [
     "chock",
     "policy-as-code",
     "rule",
     "advise"
   ],
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "chock-core"
   },
