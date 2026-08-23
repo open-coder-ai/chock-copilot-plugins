@@ -1,0 +1,16 @@
+{
+  "name": "git-safety",
+  "description": "trigger: force push, hard reset, destructive branch delete, hook bypass, direct main commits. avoid: rewriting remote history, discarding uncommitted work, skipping pre-commit checks. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}

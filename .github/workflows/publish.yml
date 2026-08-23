@@ -1,0 +1,124 @@
+name: Publish
+
+# Rebuilds this repository from the catalog and pushes the result.
+#
+# The job runs HERE rather than in the catalog on purpose: a workflow in the catalog would
+# need a long-lived credential with write access to this repository, and the only thing that
+# credential could ever do is what this workflow already does with the built-in token
+# scoped to this repository alone. Same outcome, one fewer secret to rotate or leak -- the
+# argument that made Trusted Publishing the right choice for PyPI.
+#
+# Publishing stays a decision: this runs when a human starts it, naming the catalog ref to
+# publish. It is never a side effect of a merge.
+
+on:
+  workflow_dispatch:
+    inputs:
+      catalog_ref:
+        description: Catalog ref to publish (tag, branch or SHA)
+        type: string
+        default: main
+      framework_ref:
+        # A tag is the right default -- a release should be reproducible from two pinned
+        # refs. v0.2.0 is the first framework release containing the plugin emitter.
+        # Bump this default with each framework release the published trees build from.
+        description: Framework ref to build with
+        type: string
+        default: v0.3.0
+      dry_run:
+        description: Build and show the diff without pushing
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this distribution repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          # The one checkout that keeps credentials: this job commits and pushes the
+          # regenerated tree. Documented as the artipacked exception in .github/zizmor.yml.
+          persist-credentials: true
+          path: dist
+
+      - name: Check out the catalog at the ref being published
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock-catalog
+          ref: ${{ inputs.catalog_ref }}
+          path: catalog
+
+      - name: Check out the framework
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock
+          ref: ${{ inputs.framework_ref }}
+          path: framework
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the framework
+        run: pip install ./framework
+
+      # A policy that cannot prove its claims does not get distributed. Running the
+      # catalog's own bar again here means a broken policy cannot reach users through a ref
+      # that skipped review.
+      - name: Gate on the catalog's own checks
+        working-directory: catalog
+        run: |
+          chock check
+          chock check --only evals
+
+      # Stale directories must disappear rather than linger: a policy removed or renamed in
+      # the catalog would otherwise stay installable forever, which is the yank procedure
+      # failing silently.
+      - name: Clear the generated trees
+        run: rm -rf dist/claude dist/agent-plugins
+
+      - name: Build the packages, index, lockfile and README table
+        run: |
+          chock plugin build --repo catalog --policies-dir base --format all --out-dir dist
+          chock marketplace build --dist dist
+
+      - name: Validate every package
+        run: |
+          # Pinned: this binary IS the verification step, so a floating version means the
+          # check itself changes under us without review.
+          npm install -g @anthropic-ai/claude-code@2.1.239
+          failed=0
+          for d in dist/claude/*/; do
+            claude plugin validate "$d" || failed=1
+          done
+          claude plugin validate dist || failed=1
+          exit $failed
+
+      - name: Show what would change
+        working-directory: dist
+        run: git --no-pager diff --stat
+
+      - name: Publish
+        if: ${{ inputs.dry_run == false }}
+        working-directory: dist
+        env:
+          # Dispatch inputs are typed by whoever runs the workflow; expanded by the runner
+          # into shell text they would execute, through the environment they stay data.
+          CATALOG_REF: ${{ inputs.catalog_ref }}
+          FRAMEWORK_REF: ${{ inputs.framework_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No change to publish."
+            exit 0
+          fi
+          git add -A
+          git commit -m "generated: catalog $CATALOG_REF (framework $FRAMEWORK_REF)"
+          git push

@@ -1,0 +1,16 @@
+{
+  "name": "token-efficiency",
+  "description": "trigger: large command output, broad searches, re-reading unchanged files, front-loading references. avoid: wasting context window on low-signal content. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}

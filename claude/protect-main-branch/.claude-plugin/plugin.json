@@ -1,0 +1,16 @@
+{
+  "name": "protect-main-branch",
+  "description": "Block direct commits and pushes to main or master. Enforced at commit time by reading the current branch, and at push time by parsing the refs the agent is pushing. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}

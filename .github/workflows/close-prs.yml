@@ -1,0 +1,55 @@
+name: Close hand-written pull requests
+
+# Review belongs where the source is. A pull request here would be edited compiled output
+# with no policy manifest behind it, no evals, and no honesty-tier computation -- exactly
+# the drift the generated-only invariant exists to prevent. Contributors are pointed at the
+# catalog rather than left waiting on a review that cannot happen.
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  redirect:
+    # Fork PRs only. The redirect rationale -- your change belongs in the catalog --
+    # applies to outside contributions; a branch in this repository is the maintainer's
+    # own infrastructure work (workflows, config), which is not generated content. This
+    # guard closed the repo's own first hardening PR before the condition existed.
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        env:
+          # Passed through the environment rather than inlined, so the message is plain
+          # text in one place instead of an escaped string inside JavaScript inside YAML.
+          BODY: |
+            Thanks for taking the time to open this.
+
+            This repository is **generated** -- every file here is compiled from policy sources in
+            [chock-catalog](https://github.com/open-coder-ai/chock-catalog) and overwritten on each
+            release. A change merged here would be erased by the next publish, and it would carry
+            none of the checks a policy gets: manifest validation, replayed evals, or the
+            coverage-honesty computation.
+
+            Please open your change against the catalog instead -- it reaches every client from
+            there, including this one. If you found a bug in how packages are generated rather than
+            in a policy, the emitter lives in [chock](https://github.com/open-coder-ai/chock).
+
+            Closing for that reason, not because the change is unwelcome.
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: process.env.BODY,
+            });
+            await github.rest.pulls.update({
+              pull_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+            });

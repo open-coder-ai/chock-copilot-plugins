@@ -1,0 +1,22 @@
+# zizmor configuration: deliberate, documented exceptions only.
+rules:
+  dangerous-triggers:
+    # close-prs.yml uses pull_request_target in the documented-safe pattern: it never
+    # checks out or executes PR code -- it only calls the GitHub API to comment and close.
+    # The trigger is required to act on fork PRs, which is this workflow's entire job.
+    ignore:
+      - close-prs.yml
+  artipacked:
+    # publish.yml's dist checkout is the one writer this repository exists to serve: it
+    # commits and pushes the regenerated tree with the workflow's own scoped token.
+    # Credential persistence there is the mechanism, not an oversight.
+    ignore:
+      - publish.yml
+  adhoc-packages:
+    # The claude-code CLI is npm-installed to run `claude plugin validate` -- there is no
+    # lockfile to install it from in a repo that contains no Node project. The material
+    # risk (a floating version changing the verification under us) is addressed by
+    # pinning the exact version in both install lines.
+    ignore:
+      - generated-only.yml
+      - publish.yml

@@ -1,0 +1,16 @@
+{
+  "name": "context-hygiene",
+  "description": "trigger: context bloat, stale observations, resolved content inlined, noisy exploration. avoid: context rot and lost-in-the-middle failures. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}

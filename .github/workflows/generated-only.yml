@@ -1,0 +1,73 @@
+name: Generated-only
+
+# This repository is compiled output. The guarantee it offers users is that its contents
+# are exactly what the catalog published -- so the check is not a lint, it is the security
+# argument: regenerate from the pinned sources and fail on any difference. A hand edit, a
+# tampered guard script, or a manually added plugin all surface here as a diff.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this distribution repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          path: dist
+
+      - name: Check out the framework
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock
+          path: framework
+
+      - name: Check out the catalog
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock-catalog
+          path: catalog
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the framework from source
+        run: pip install ./framework
+
+      - name: Verify the lockfile and index match the published tree
+        working-directory: dist
+        run: chock marketplace build --dist . --check
+
+      - name: Regenerate from the catalog and diff
+        run: |
+          chock plugin build --repo catalog --policies-dir base --format all --out-dir dist
+          chock marketplace build --dist dist
+          cd dist
+          if ! git diff --exit-code; then
+            echo "::error::This repository is generated. Regenerating from the catalog produced a different tree, so something here was not published by the catalog. Open a pull request against open-coder-ai/chock-catalog instead."
+            exit 1
+          fi
+          echo "Tree matches a fresh build from the catalog."
+
+      - name: Validate every package with Claude Code's own validator
+        run: |
+          # Pinned: this binary IS the verification step, so a floating version means the
+          # check itself changes under us without review.
+          npm install -g @anthropic-ai/claude-code@2.1.239
+          failed=0
+          for d in dist/claude/*/; do
+            claude plugin validate "$d" || failed=1
+          done
+          claude plugin validate dist || failed=1
+          exit $failed
