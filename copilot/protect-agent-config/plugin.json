@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "protect-agent-config",
+  "version": "0.0.3",
+  "description": "Guard against an agent hand-editing its own guardrails. Agent instruction files (AGENTS.md and the per-agent wrappers), permission files (.claude/settings.json, .mcp.json) and vendored enforcement (.chock/bin/, .chock/compiled/) define what the agent may do -- so a shell command that rewrites them is the agent modifying its own authority (MITRE ATLAS AML.T0081; the AIVSS self-modification factor). The guard refuses shell write-commands targeting those paths; reads pass, and regeneration through `chock sync` passes because the tool writes them itself rather than through shell editing. Best-effort and deliberately coarse: a compound command that both reads a protected file and writes elsewhere may be refused -- rewrite it in two steps. Escape for a human-approved change: include 'chock: approved-config-change' in the command. [Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "{'control': 'asi03', 'coverage': 'partial', 'note': 'blocks shell self-modification of agent permission and instruction files; identity design and grant scoping remain advisory'}"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "rule",
+      "enforcement": "advise",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "block-destructive-commands",
+  "version": "0.0.6",
+  "description": "Best-effort guard against destructive commands: rm -rf targeting absolute, home, or root-adjacent paths; git push --force (not --force-with-lease); git reset --hard; git clean -f; kubectl delete; terraform destroy. Known bypass classes include aliases, quoted arguments, non-standard clients, and scripts that invoke these commands indirectly. This is friction, not a security boundary. [Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "asi02"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "rule",
+      "enforcement": "advise",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

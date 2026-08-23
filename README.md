@@ -59,15 +59,18 @@ chock init && chock sync --ci
 ## Layout
 
 ```
-claude/<policy-id>/          plugin packages (hooks where the policy has a guard) — the tree Copilot reads
-agent-plugins/<policy-id>/   Agent Plugins 1.0 packages (advisory: the standard has no hooks)
+claude/<policy-id>/          Claude-layout packages (hooks where the policy has a guard) — Copilot reads these natively
+copilot/<policy-id>/         Agent Plugins 1.0 layout with the same hook under com.github.copilot/ — for spec-validating marketplaces
+agent-plugins/<policy-id>/   plain Agent Plugins 1.0 packages (advisory: the standard itself has no hooks)
 .claude-plugin/marketplace.json    the index VS Code and Claude Code read
 .github/plugin/marketplace.json    byte-identical copy, the path Copilot CLI reads
 ```
 
-The two trees are deliberately separate. The same policy is enforced in a package that
-ships a hook and advisory in an Agent Plugins package that cannot carry one — so a shared
-skill file would have to make a claim that is false for one of them.
+The trees are deliberately separate. The same policy is enforced in a package that ships a
+hook and advisory in a package that cannot carry one — so a shared skill file would have to
+make a claim that is false for one of them. `claude/` and `copilot/` run byte-identical
+hooks; they differ only in where the manifest and hook file live, because marketplace
+validators disagree about that.
 
 ## Trust
 
