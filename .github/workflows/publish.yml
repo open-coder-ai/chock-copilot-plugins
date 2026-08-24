@@ -24,7 +24,7 @@ on:
         # Bump this default with each framework release the published trees build from.
         description: Framework ref to build with
         type: string
-        default: v0.3.0
+        default: v0.4.0
       dry_run:
         description: Build and show the diff without pushing
         type: boolean
