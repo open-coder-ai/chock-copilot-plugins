@@ -13,10 +13,14 @@ pointer to the catalog — review belongs where the source is.
 
 These packages use the **Claude plugin format**, which VS Code and GitHub Copilot CLI read
 natively (VS Code auto-detects the format and sets `CLAUDE_PLUGIN_ROOT` for the hook). The
-same packages also work in Claude Code and Grok Build. This repository is the
+same packages also work in Claude Code. This repository is the
 **Copilot-branded** distribution of that content; the format-named distribution lives at
 [chock-claude-plugins](https://github.com/open-coder-ai/chock-claude-plugins) and the two
 are byte-identical where they overlap, because both are generated from the same catalog.
+Cursor and Codex users are served by
+[chock-cursor-plugins](https://github.com/open-coder-ai/chock-cursor-plugins) and
+[chock-codex-plugins](https://github.com/open-coder-ai/chock-codex-plugins), which carry
+those vendors' own formats and deny dialects.
 
 ```
 # VS Code / GitHub Copilot: add this repository as a plugin marketplace, then install a
