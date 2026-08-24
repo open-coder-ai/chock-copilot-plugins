@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 210" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13">
+  <style>
+    .wipe { transform-origin: 207px 0px; animation: wipe 9s steps(15) infinite; }
+    @keyframes wipe { 0%, 5% { transform: scaleX(1); } 27%, 100% { transform: scaleX(0); } }
+    .deny { animation: appear 9s linear infinite; }
+    .badge { animation: badge 9s linear infinite; }
+    .cur { animation: blink 1s steps(1) infinite; }
+    @keyframes appear { 0%, 33% { opacity: 0; } 36%, 100% { opacity: 1; } }
+    @keyframes badge { 0%, 41% { opacity: 0; } 45%, 100% { opacity: 1; } }
+    @keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  </style>
+  <rect width="720" height="210" rx="10" fill="#1e1e2e"/>
+  <path d="M0 10 a10 10 0 0 1 10 -10 h700 a10 10 0 0 1 10 10 v24 h-720 z" fill="#313244"/>
+  <circle cx="22" cy="17" r="6" fill="#f38ba8"/><circle cx="42" cy="17" r="6" fill="#f9e2af"/><circle cx="62" cy="17" r="6" fill="#a6e3a1"/>
+  <text x="360" y="21" text-anchor="middle" fill="#7f849c">Copilot CLI / VS Code — chock guard, witnessed on a real install</text>
+  <text x="24" y="72" fill="#a6e3a1" font-weight="bold">agent$</text>
+  <text x="86" y="72" fill="#cdd6f4">rm -rf /var/log<tspan class="cur" fill="#cdd6f4"> █</tspan></text>
+  <rect class="wipe" x="86" y="56" width="137" height="22" fill="#1e1e2e"/>
+  <g class="deny"><text x="24" y="112" fill="#f38ba8" font-weight="bold">BLOCKED: destructive rm command targeting '/var/log' is not allowed without approval.</text></g>
+  <g class="badge">
+    <rect x="24" y="152" width="325" height="34" rx="17" fill="#313244"/>
+    <text x="44" y="174" fill="#a6e3a1" font-weight="bold">✓ denied before it ran</text>
+    <text x="226" y="174" fill="#7f849c">agent hook · exit 2</text>
+  </g>
+</svg>

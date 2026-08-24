@@ -4,6 +4,8 @@ Chock policies packaged as installable plugins for **GitHub Copilot** — Copilo
 VS Code agent mode. Guard policies ship a real `PreToolUse` hook, so a matched destructive
 command is **denied in the session**, not just discouraged.
 
+<img src="docs/assets/hero.svg" alt="Animated replay: an agent runs rm -rf and the chock guard denies it before it runs (Copilot CLI / VS Code, exit 2)" width="720">
+
 **This repository is generated.** Every file is compiled from policy sources in
 [chock-catalog](https://github.com/open-coder-ai/chock-catalog) by
 [chock](https://github.com/open-coder-ai/chock). Pull requests here are closed with a
