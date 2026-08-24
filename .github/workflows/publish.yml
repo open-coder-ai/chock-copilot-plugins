@@ -81,11 +81,13 @@ jobs:
       # the catalog would otherwise stay installable forever, which is the yank procedure
       # failing silently.
       - name: Clear the generated trees
-        run: rm -rf dist/claude dist/agent-plugins
+        run: rm -rf dist/claude dist/agent-plugins dist/copilot dist/cursor dist/codex
 
       - name: Build the packages, index, lockfile and README table
         run: |
-          chock plugin build --repo catalog --policies-dir base --format all --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format agent-plugins --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format claude --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format copilot --out-dir dist
           chock marketplace build --dist dist
 
       - name: Validate every package

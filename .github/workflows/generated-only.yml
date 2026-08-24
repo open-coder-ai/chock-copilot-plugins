@@ -51,7 +51,9 @@ jobs:
 
       - name: Regenerate from the catalog and diff
         run: |
-          chock plugin build --repo catalog --policies-dir base --format all --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format agent-plugins --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format claude --out-dir dist
+          chock plugin build --repo catalog --policies-dir base --format copilot --out-dir dist
           chock marketplace build --dist dist
           cd dist
           if ! git diff --exit-code; then
