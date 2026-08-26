@@ -8,7 +8,7 @@
     "advise",
     "{'control': 'asi03', 'coverage': 'partial', 'note': 'blocks shell self-modification of agent permission and instruction files; identity design and grant scoping remain advisory'}"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": {
     "name": "chock-core"
   },

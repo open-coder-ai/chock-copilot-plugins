@@ -1,6 +1,6 @@
 {
   "name": "code-safety",
-  "description": "trigger: secrets, eval/exec, unsanitized SQL, hallucinated dependencies. avoid: committing credentials, adding unverified packages, executing dynamic code. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "description": "trigger: secrets, eval/exec, unsanitized SQL, hallucinated dependencies. avoid: committing credentials, adding unverified packages, executing dynamic code. Install scan-secrets for the enforced counterpart of the secret slice (a commit-time gate), and verify-dependency-exists for the dependency slice (opt-in: disabled by default, needs a curated allowlist); the eval/exec and unsanitized-SQL guidance stays advisory (no diff-time gate can decide whether dynamic execution or a query string is unsafe). [Advisory skill only; enforcement needs chock installed in the repo.]",
   "keywords": [
     "chock",
     "policy-as-code",
@@ -8,7 +8,7 @@
     "advise",
     "asi05"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "chock-core"
   },

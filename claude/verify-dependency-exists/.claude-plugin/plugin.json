@@ -6,9 +6,9 @@
     "policy-as-code",
     "hook",
     "block",
-    "{'control': 'asi04', 'coverage': 'full', 'note': 'blocks unlisted deps added to requirements.txt, pyproject.toml, package.json, go.mod'}"
+    "{'control': 'asi04', 'coverage': 'partial', 'note': 'allowlist gate over newly-added dependencies in requirements.txt, pyproject.toml, package.json, go.mod at commit entry; it checks membership in a curated allowlist, not existence in the upstream registry'}"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "chock-core"
   },

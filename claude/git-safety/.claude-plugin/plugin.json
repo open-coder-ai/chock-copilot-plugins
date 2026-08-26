@@ -1,13 +1,13 @@
 {
   "name": "git-safety",
-  "description": "trigger: force push, hard reset, destructive branch delete, hook bypass, direct main commits. avoid: rewriting remote history, discarding uncommitted work, skipping pre-commit checks. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "description": "trigger: force push, hard reset, destructive branch delete, hook bypass, direct main commits. avoid: rewriting remote history, discarding uncommitted work, skipping pre-commit checks. Install block-destructive-commands, block-no-verify and protect-main-branch for the enforced counterparts of these controls (protect-main-branch is a commit-time gate; the other two are pre-execution guards on hook-carrying clients, advisory elsewhere); this rule is the advisory layer over them plus atomic-commit and diff-size guidance no gate can decide. [Advisory skill only; enforcement needs chock installed in the repo.]",
   "keywords": [
     "chock",
     "policy-as-code",
     "rule",
     "advise"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "chock-core"
   },

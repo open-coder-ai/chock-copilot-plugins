@@ -8,7 +8,7 @@
     "block",
     "{'control': 'asi03', 'coverage': 'partial', 'note': 'blocks the everything-grant a diff can show (llm03 excessive agency); least-agency tool design remains advisory (owasp-asi02-tool-misuse, owasp-asi03-identity-privilege-abuse)'}"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "chock-core"
   },
