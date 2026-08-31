@@ -93,6 +93,39 @@ validators disagree about that.
   unusual paths can evade them. See
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md) and the
   [assurance case](https://github.com/open-coder-ai/chock/blob/main/docs/assurance-case.md).
+- **Tested upstream, and gated:** every policy ships an eval suite
+  (`base/<policy>/evals/suite.yaml`) in the catalog, and the publish workflow runs
+  `chock check` and `chock check --only evals` before packaging anything — a policy whose
+  evals fail cannot reach this repository. The tests live in the catalog because the policy
+  source does; this repository is compiled output.
+- **This README is the exception:** it is the one file the publisher never writes, so it
+  alone sits outside the generated-only guarantee. Everything else here regenerates.
+
+### Verify it yourself
+
+Nothing above asks for trust that cannot be checked. This rebuilds the published tree from
+source and compares it with what is committed here:
+
+```bash
+git clone https://github.com/open-coder-ai/chock-copilot-plugins dist
+git clone --branch v0.7.0 https://github.com/open-coder-ai/chock framework
+git clone https://github.com/open-coder-ai/chock-catalog catalog
+pip install ./framework
+chock plugin build --repo catalog --policies-dir base --format agent-plugins --out-dir dist
+chock plugin build --repo catalog --policies-dir base --format claude --out-dir dist
+chock plugin build --repo catalog --policies-dir base --format copilot --out-dir dist
+chock marketplace build --dist dist
+git -C dist diff --exit-code && git -C dist status --porcelain
+```
+
+Silence from both `git` commands means this repository is byte-identical to a fresh build
+from the catalog. `--branch v0.7.0` is the framework release this tree was published from.
+`chock-market.lock` records a sha256 per published plugin directory, so one package can be
+checked without rebuilding the rest.
+
+**If you are listing these plugins in a marketplace,** pin both a tag and the full commit
+SHA. The tag names the release; the SHA is what holds the reviewed bytes still.
+
 
 ## License
 
