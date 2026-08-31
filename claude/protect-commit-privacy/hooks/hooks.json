@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/pretooluse.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/protect-commit-privacy.sh\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/protect-commit-privacy.sh\"",
             "timeout": 30
           }
         ]

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/pretooluse.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/protect-agent-config.sh\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/protect-agent-config.sh\"",
             "timeout": 30
           }
         ]

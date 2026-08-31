@@ -1,0 +1,16 @@
+{
+  "name": "chock-mise",
+  "description": "trigger: personalize the coding agent to its owner -- adopt the owner's dialect, taste, habits and demeanor so it works like a trained twin of that developer. apply: the owner's chock-mise profile where present; defer to committed project standards where it is silent or conflicts. avoid: inferring personal identity or employer-confidential data, and overriding the project's own committed rules. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}
