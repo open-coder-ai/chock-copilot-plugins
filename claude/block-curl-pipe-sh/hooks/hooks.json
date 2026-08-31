@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/pretooluse.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/block-curl-pipe-sh.sh\"",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/block-curl-pipe-sh.sh\"",
             "timeout": 30
           }
         ]
