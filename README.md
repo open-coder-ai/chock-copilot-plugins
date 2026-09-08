@@ -94,6 +94,35 @@ validators disagree about that.
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md) and the
   [assurance case](https://github.com/open-coder-ai/chock/blob/main/docs/assurance-case.md).
 
+## Contributing
+
+Pull requests that change packages here are closed automatically, and not because the
+change is unwelcome: every package is compiled from the catalog, so an edit here would be
+overwritten at the next publish and would carry none of a policy's checks. What is welcome,
+and where it goes:
+
+| You want to | Go to |
+| :--- | :--- |
+| Fix or add a policy | [chock-catalog](https://github.com/open-coder-ai/chock-catalog/blob/main/CONTRIBUTING.md) — it reaches every client from there, including this one |
+| Report that a guard did or did not block on your Copilot CLI or VS Code version | an issue on [chock](https://github.com/open-coder-ai/chock/issues/new/choose), which records the witnessed-blocking claims these packages carry; "it fails open where you say it fails closed" is the most useful result you can send |
+| Report a bug in how packages are generated | [chock](https://github.com/open-coder-ai/chock/issues/new/choose), where the emitter lives |
+| Fix this README | here — it is the one hand-written file in the repository |
+
+## Part of the open-coder-ai family
+
+Everything under [open-coder-ai](https://github.com/open-coder-ai) is built on one rule: a claim must match a
+mechanism. Where this repository sits among the others:
+
+| Repository | What it is |
+| :--- | :--- |
+| [chock](https://github.com/open-coder-ai/chock) | The framework: write a policy once, enforce it on git hooks, CI, and every agent |
+| [chock-catalog](https://github.com/open-coder-ai/chock-catalog) | The policies, each graded by what it actually enforces |
+| [agentseam](https://github.com/open-coder-ai/agentseam) | The primitives layer under chock: one handler API over every agent's hooks, with a capability matrix that carries its provenance |
+| [context-report](https://github.com/open-coder-ai/context-report) | A signed report format for whether a plugin, hook, skill or `AGENTS.md` actually works |
+| [chock-threat-intel](https://github.com/open-coder-ai/chock-threat-intel) | A weekly, human-reviewed threat digest scored against the catalog |
+| [chock-claude-plugins](https://github.com/open-coder-ai/chock-claude-plugins) · [cursor](https://github.com/open-coder-ai/chock-cursor-plugins) · [codex](https://github.com/open-coder-ai/chock-codex-plugins) | The same catalog compiled for the other clients; generated only, like this one |
+| [chock-quickstart](https://github.com/open-coder-ai/chock-quickstart) · [chock-example](https://github.com/open-coder-ai/chock-example) | Template repositories: exactly what `chock init` leaves behind, and a working adoption with one policy per layer |
+
 ## License
 
 Apache-2.0, same as the framework and the catalog.
