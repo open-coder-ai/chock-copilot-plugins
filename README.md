@@ -56,8 +56,47 @@ closed automatically — open them against the catalog instead.
   framework sources.
 - **Best-effort, not a boundary:** guards are pattern-based filters; see
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md).
+- **Tested upstream, and gated:** every policy ships an eval suite
+  (`base/<policy>/evals/suite.yaml`) in the catalog, and the publish workflow runs
+  `chock check` and `chock check --only evals` before packaging anything — a policy whose
+  evals fail cannot reach this repository. The tests live in the catalog because the policy
+  source does; this repository is compiled output.
 - This README is the exception: the one hand-written file in this repository, so it alone
   sits outside the generated-only guarantee.
+
+### Verify it yourself
+
+Nothing above asks for trust that cannot be checked. This rebuilds the published tree from
+source and compares it with what is committed here:
+
+```bash
+git clone https://github.com/open-coder-ai/chock-copilot-plugins dist
+git clone --branch v0.7.0 https://github.com/open-coder-ai/chock framework
+git clone https://github.com/open-coder-ai/chock-catalog catalog
+pip install ./framework
+chock plugin build --repo catalog --policies-dir base --format agent-plugins --out-dir dist
+chock plugin build --repo catalog --policies-dir base --format claude --out-dir dist
+chock plugin build --repo catalog --policies-dir base --format copilot --out-dir dist
+chock marketplace build --dist dist
+git -C dist diff --exit-code && git -C dist status --porcelain
+```
+
+Silence from both `git` commands means this repository is byte-identical to a fresh build
+from the catalog. `--branch v0.7.0` is the framework release this tree was published from.
+`chock-market.lock` records a sha256 per published plugin directory, so one package can be
+checked without rebuilding the rest.
+
+**If you are listing these plugins in a marketplace,** pin both a tag and the full commit
+SHA. The tag names the release; the SHA is what holds the reviewed bytes still.
+
+## Contributing
+
+| You want to | Go to |
+| :--- | :--- |
+| Fix or add a policy | [chock-catalog](https://github.com/open-coder-ai/chock-catalog/blob/main/CONTRIBUTING.md) — it reaches every client from there, including this one |
+| Report that a guard did or did not block on your Copilot CLI or VS Code version | an issue on [chock](https://github.com/open-coder-ai/chock/issues/new/choose), which records the witnessed-blocking claims these packages carry; "it fails open where you say it fails closed" is the most useful result you can send |
+| Report a bug in how packages are generated | [chock](https://github.com/open-coder-ai/chock/issues/new/choose), where the emitter lives |
+| Fix this README | here — it is the one hand-written file in the repository |
 
 ## Part of open-coder-ai
 

@@ -24,19 +24,43 @@ jobs:
           persist-credentials: false
           path: dist
 
-      - name: Check out the framework
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
-        with:
-          persist-credentials: false
-          repository: open-coder-ai/chock
-          path: framework
-
+      # The catalog is checked out first because it names the framework. `.framework-ref`
+      # is the emitter version this catalog's published output is defined against, so the
+      # only build that can prove this tree came from the catalog is a build with that
+      # framework. Checking out `main` here instead -- which is what this did -- compares a
+      # fixed tree against a moving emitter: the next merge that changes emitter output
+      # turns this check red on a tree nobody touched, while `publish` keeps building from
+      # a pinned ref. Deriving both from one file is what keeps verify and publish honest.
       - name: Check out the catalog
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
         with:
           persist-credentials: false
           repository: open-coder-ai/chock-catalog
           path: catalog
+
+      - name: Read the framework ref the catalog declares
+        id: framework
+        working-directory: catalog
+        run: |
+          if [ ! -f .framework-ref ]; then
+            echo "::error::chock-catalog has no .framework-ref, so there is no declared framework to verify this tree against."
+            exit 1
+          fi
+          ref="$(tr -d '[:space:]' < .framework-ref)"
+          if [ -z "$ref" ]; then
+            echo "::error::chock-catalog/.framework-ref is empty, so there is no declared framework to verify this tree against."
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Verifying against framework $ref, from chock-catalog/.framework-ref."
+
+      - name: Check out the framework at the ref the catalog declares
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+        with:
+          persist-credentials: false
+          repository: open-coder-ai/chock
+          ref: ${{ steps.framework.outputs.ref }}
+          path: framework
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:

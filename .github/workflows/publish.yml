@@ -19,15 +19,20 @@ on:
         type: string
         default: main
       framework_ref:
-        # A tag is the right default -- a release should be reproducible from two pinned
-        # refs. This names the framework the committed tree was last built with, so a
-        # dispatch that accepts the defaults reproduces what is published rather than
-        # rewriting it. It sat at v0.4.0 across three releases while the trees moved to
-        # v0.5.0, v0.6.0 and v0.7.0, which made the safe-looking default the one that
-        # would have rewritten every package. Bump it in the same change that republishes.
-        description: Framework ref to build with
+        # The framework the committed tree was built with: the emitter version whose output
+        # *is* this repository's content. Getting it wrong does not produce a stale build,
+        # it rewrites every published package against a different emitter.
+        #
+        # `auto` reads that value from the catalog ref being published, out of its
+        # `.framework-ref` file, so the default is right by construction. A literal default
+        # was tried and failed: it sat at v0.4.0 across three releases while the trees moved
+        # to v0.5.0, v0.6.0 and v0.7.0, because the comment asking a human to bump it does
+        # not execute. A sentinel is used rather than an empty default so that the resolved
+        # value is visible in the run log and an accidental blank still resolves the same
+        # way. An explicit tag, branch or SHA overrides it, which is why the input remains.
+        description: Framework ref to build with ("auto" = the ref chock-catalog declares)
         type: string
-        default: v0.7.0
+        default: auto
       dry_run:
         description: Build and show the diff without pushing
         type: boolean
@@ -56,12 +61,37 @@ jobs:
           ref: ${{ inputs.catalog_ref }}
           path: catalog
 
-      - name: Check out the framework
+      - name: Resolve the framework ref
+        id: framework
+        working-directory: catalog
+        env:
+          # Dispatch inputs are typed by whoever runs the workflow; expanded by the runner
+          # into shell text they would execute, through the environment they stay data.
+          FRAMEWORK_REF_INPUT: ${{ inputs.framework_ref }}
+        run: |
+          ref="$FRAMEWORK_REF_INPUT"
+          origin="the framework_ref dispatch input"
+          if [ -z "$ref" ] || [ "$ref" = auto ]; then
+            if [ ! -f .framework-ref ]; then
+              echo "::error::framework_ref is \"auto\" but the catalog ref being published has no .framework-ref; name a framework ref explicitly."
+              exit 1
+            fi
+            ref="$(tr -d '[:space:]' < .framework-ref)"
+            origin="chock-catalog/.framework-ref at the catalog ref being published"
+          fi
+          if [ -z "$ref" ]; then
+            echo "::error::The framework ref resolved to nothing; name a framework ref explicitly."
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Building with framework $ref, from $origin."
+
+      - name: Check out the framework at the resolved ref
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
         with:
           persist-credentials: false
           repository: open-coder-ai/chock
-          ref: ${{ inputs.framework_ref }}
+          ref: ${{ steps.framework.outputs.ref }}
           path: framework
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
@@ -107,7 +137,16 @@ jobs:
 
       - name: Show what would change
         working-directory: dist
-        run: git --no-pager diff --stat
+        run: |
+          # Record intent-to-add first. `git diff` reports tracked files only, so without
+          # this every *added* file is invisible and a human reading the dry run to decide
+          # whether to publish is shown only what disappears. The v0.7.0 dry run printed
+          # "15 files changed, 14 insertions(+), 2450 deletions(-)" for what was a rename
+          # into a larger file; staged, the same build reads 5677 insertions(+), 14
+          # deletions(-). `-N` records the paths without staging content, so the worktree
+          # is untouched and the commit below behaves exactly as it did.
+          git add -A -N .
+          git --no-pager diff --stat
 
       - name: Publish
         if: ${{ inputs.dry_run == false }}
@@ -116,10 +155,14 @@ jobs:
           # Dispatch inputs are typed by whoever runs the workflow; expanded by the runner
           # into shell text they would execute, through the environment they stay data.
           CATALOG_REF: ${{ inputs.catalog_ref }}
-          FRAMEWORK_REF: ${{ inputs.framework_ref }}
+          FRAMEWORK_REF: ${{ steps.framework.outputs.ref }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Same blindness as the dry run, with a worse consequence: on a publish whose
+          # only change is added files, an unstaged `git diff --quiet` is clean and this
+          # exits 0 reporting "No change to publish" while publishing nothing.
+          git add -A -N .
           if git diff --quiet; then
             echo "No change to publish."
             exit 0
