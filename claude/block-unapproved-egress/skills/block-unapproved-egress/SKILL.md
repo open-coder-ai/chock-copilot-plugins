@@ -16,4 +16,4 @@ block(egress): fetch(curl|wget|iwr) + upload(-d|--data|-F|--upload-file|-X POST|
 allow: fetch_only(GET), allowlisted_host(github|pypi|npm|...); floor_not_sandbox; escape: 'pragma: allowlist egress'
 ```
 
-This policy is enforced in this client by a PreToolUse hook installed with the plugin, subject to the fail-open condition stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock
+This policy is enforced in this client by a PreToolUse hook installed with the plugin, subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

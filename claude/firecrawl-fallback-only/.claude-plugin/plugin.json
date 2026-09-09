@@ -1,0 +1,16 @@
+{
+  "name": "firecrawl-fallback-only",
+  "description": "trigger: web research where a direct fetch fails, is blocked, or needs JS rendering. avoid: reaching for the Firecrawl connector as the default fetch path. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock"
+}
