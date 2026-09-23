@@ -4,7 +4,7 @@ description: "The mechanizable slice of CI supply-chain hardening, enforced at t
 metadata:
   chock.artifact: hook
   chock.enforcement: block
-  chock.coverage_without_chock: advisory
+  chock.hooks: hooks/hooks.json
 ---
 
 # Pin GitHub Actions
@@ -16,4 +16,4 @@ on(commit|tool_use): block(content_regex) scan=added_lines allowlist_pragma=prag
 Unpinned GitHub Action detected: a workflow references an action by a tag or branch (owner/repo at a movable ref) rather than a full 40-character commit SHA. Pin it to the SHA -- keep the version in a trailing comment for readability -- so a re-tagged or compromised release cannot change what runs. At commit, 'pragma: allowlist unpinned-action' on the same line marks a deliberate exception; the pragma is NOT honored at tool-use, where the scanned text is a live tool argument an appended token could neutralize.
 ```
 
-This skill is advisory: the client reading it has no mechanism to enforce it. The same policy compiled by `chock` becomes a git hook that exits non-zero. See https://github.com/open-coder-ai/chock
+This policy is enforced in this client by the PreToolUse and Stop hooks installed with the plugin, subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

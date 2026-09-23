@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

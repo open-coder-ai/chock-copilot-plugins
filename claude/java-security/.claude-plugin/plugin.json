@@ -1,0 +1,16 @@
+{
+  "name": "java-security",
+  "description": "trigger: writing Java or Spring code, MyBatis mappers, JSP, Thymeleaf or FreeMarker templates, application.properties or .yml; \"customize java security\" opens this skill's guided page. avoid: string-interpolated SQL, unescaped template output, unsafe deserialization, wildcard CORS with credentials, wildcard actuator exposure, an unverified JWT parse, a request-chosen file path, an ObjectInputStream over request bytes. Eight rules, each allow|deny|ask in .chock/security.json; absent = deny. [Session-enforced via PreToolUse and Stop hooks; needs python3. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. Without python3, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "version": "0.3.0",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

@@ -4,7 +4,7 @@ description: "The mechanizable slice of prompt-injection defense, enforced at tw
 metadata:
   chock.artifact: hook
   chock.enforcement: block
-  chock.coverage_without_chock: advisory
+  chock.hooks: hooks/hooks.json
 ---
 
 # Block Invisible Unicode
@@ -16,4 +16,4 @@ on(commit|tool_use): block(content_regex) scan=added_lines allowlist_pragma=prag
 Invisible or direction-override Unicode detected in this change. These characters change how code reads to a human or hide instructions an agent will still obey. Remove them. At commit, 'pragma: allowlist invisible-unicode' on the same line marks a documented exception (e.g. a test fixture); the pragma is NOT honored at tool-use, where the scanned text is a live tool argument an appended token could neutralize.
 ```
 
-This skill is advisory: the client reading it has no mechanism to enforce it. The same policy compiled by `chock` becomes a git hook that exits non-zero. See https://github.com/open-coder-ai/chock
+This policy is enforced in this client by the PreToolUse and Stop hooks installed with the plugin, subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

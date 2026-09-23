@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "block-wildcard-agent-permissions",
-  "version": "0.0.4",
-  "description": "The mechanizable slice of excessive agency, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- agent permission grants that allow everything. A settings file whose shell grant or allow-list is a bare wildcard hands the agent unlimited tool authority for every future session, in a file reviewers rarely read as code. The agent-world twin of block-wildcard-iam: scope grants to what the task needs (e.g. Bash(git status:*)). Escape: 'pragma: allowlist broad-agency' on the same line. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "version": "0.0.5",
+  "description": "The mechanizable slice of excessive agency, enforced at two points: at commit (the git hook, over staged changes) and at agent tool-use (over a tool call's arguments, as the agent writes) -- agent permission grants that allow everything. A settings file whose shell grant or allow-list is a bare wildcard hands the agent unlimited tool authority for every future session, in a file reviewers rarely read as code. The agent-world twin of block-wildcard-iam: scope grants to what the task needs (e.g. Bash(git status:*)). The allow/alwaysAllow/tools/defaultMode keys match whether or not YAML-style config quotes them, word-bounded so \"disallow\"/\"allowlist\" are not mistaken for \"allow\". Escape: 'pragma: allowlist broad-agency' on the same line. [Session-enforced at the turn's end by a Stop hook; needs python3. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. Without python3, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Enforces only in a client that reads the com.github.copilot namespace and tells the hook where the package lives; a client that exports no plugin-root variable runs the hook, which then allows, so treat this package as advisory unless a deny has been witnessed in your own client.]",
   "author": {
     "name": "chock-core"
   },
@@ -19,7 +19,7 @@
     "io.github.open-coder-ai": {
       "artifact": "hook",
       "enforcement": "block",
-      "coverage_without_chock": "advisory"
+      "hooks": "com.github.copilot/hooks/hooks.json"
     }
   }
 }

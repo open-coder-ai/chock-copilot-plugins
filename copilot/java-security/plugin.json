@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "java-security",
+  "version": "0.3.0",
+  "description": "trigger: writing Java or Spring code, MyBatis mappers, JSP, Thymeleaf or FreeMarker templates, application.properties or .yml; \"customize java security\" opens this skill's guided page. avoid: string-interpolated SQL, unescaped template output, unsafe deserialization, wildcard CORS with credentials, wildcard actuator exposure, an unverified JWT parse, a request-chosen file path, an ObjectInputStream over request bytes. Eight rules, each allow|deny|ask in .chock/security.json; absent = deny. [Session-enforced at the turn's end by a Stop hook; needs python3. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. Without python3, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Enforces only in a client that reads the com.github.copilot namespace and tells the hook where the package lives; a client that exports no plugin-root variable runs the hook, which then allows, so treat this package as advisory unless a deny has been witnessed in your own client.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "hook",
+      "enforcement": "block",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

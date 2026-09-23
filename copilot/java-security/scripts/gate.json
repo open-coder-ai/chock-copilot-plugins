@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "java-security: a Java construct a rule denies -- ${} in MyBatis SQL, unescaped template output, unsafe deserialization, a wildcard CORS origin with credentials, wildcard actuator exposure, an unverified JWT parse, a request-chosen file path, an ObjectInputStream over request bytes. Each rule's verdict is allow|deny|ask in .chock/security.json (absent = deny); waive one line with // chock: allow <rule-id>; choose per rule by asking to customize java security, which opens this skill's guided page.",
+  "params": {
+    "script": "implementations/java-security-gate.py"
+  },
+  "script_base": "gate"
+}
