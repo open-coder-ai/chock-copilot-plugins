@@ -37,11 +37,20 @@ natively (VS Code auto-detects the format and sets `CLAUDE_PLUGIN_ROOT` for the 
 
 ## What you get
 
-Guard policies ship a `PreToolUse` hook and are session-enforced where the host honours it —
-the hook exits non-zero and the client refuses the call. This needs `python3` and a usable
-shell on PATH: fail-open clients allow silently without them, fail-closed clients refuse
-matched commands. Advisory policies are a skill the client reads; they shape behaviour but
-cannot block anything on their own. See **[PLUGINS.md](PLUGINS.md)** for the full list: each
+Two kinds of package enforce here, and they enforce differently.
+
+**Guard policies** ship a `PreToolUse` hook that judges a shell command before it runs. The
+adapter always exits 0 and carries its verdict as JSON on stdout (`permissionDecision: "deny"`),
+so the refusal is the client reading that answer, not an exit status.
+
+**Gate policies** judge what a turn writes rather than what it runs. In the `copilot/` tree
+they are wired at `Stop`, re-reading what the turn left on disk; the `claude/` tree adds
+`PreToolUse` on the write tools, judging the file a write would create.
+
+Both need `python3` on PATH: without it a fail-open client allows silently. A guard that
+crashes is handled per that client's description; a gate that cannot reach a decision refuses
+rather than allowing something it never judged. Advisory policies are a skill the client reads;
+they shape behaviour but cannot block anything on their own. See **[PLUGINS.md](PLUGINS.md)** for the full list: each
 policy, its version, whether it enforces or advises in this client, and a catalog link.
 
 ## Generated from chock-catalog
@@ -52,8 +61,8 @@ Every file here is compiled from policy sources in
 closed automatically — open them against the catalog instead.
 
 - **Generated only:** CI regenerates from the pinned catalog and fails on any difference.
-- **Byte-identical guards:** guard scripts and the hook adapter are verbatim copies of their
-  framework sources.
+- **Byte-identical guards:** each guard script is a verbatim copy of its policy's source in the
+  catalog, and the hook adapter a verbatim copy of its framework source.
 - **Best-effort, not a boundary:** guards are pattern-based filters; see
   [SECURITY.md](https://github.com/open-coder-ai/chock/blob/main/SECURITY.md).
 - **Tested upstream, and gated:** every policy ships an eval suite
@@ -61,8 +70,8 @@ closed automatically — open them against the catalog instead.
   `chock check` and `chock check --only evals` before packaging anything — a policy whose
   evals fail cannot reach this repository. The tests live in the catalog because the policy
   source does; this repository is compiled output.
-- This README is the exception: the one hand-written file in this repository, so it alone
-  sits outside the generated-only guarantee.
+- This README is hand-written, as are `SECURITY.md` and the workflows under `.github/`, so they
+  sit outside the generated-only guarantee.
 
 ### Verify it yourself
 
@@ -71,8 +80,9 @@ source and compares it with what is committed here:
 
 ```bash
 git clone https://github.com/open-coder-ai/chock-copilot-plugins dist
-git clone --branch v0.7.0 https://github.com/open-coder-ai/chock framework
 git clone https://github.com/open-coder-ai/chock-catalog catalog
+git clone --branch "$(tr -d '[:space:]' < catalog/.framework-ref)" \
+  https://github.com/open-coder-ai/chock framework
 pip install ./framework
 chock plugin build --repo catalog --policies-dir base --format agent-plugins --out-dir dist
 chock plugin build --repo catalog --policies-dir base --format claude --out-dir dist
@@ -82,7 +92,9 @@ git -C dist diff --exit-code && git -C dist status --porcelain
 ```
 
 Silence from both `git` commands means this repository is byte-identical to a fresh build
-from the catalog. `--branch v0.7.0` is the framework release this tree was published from.
+from the catalog. The framework ref comes from the catalog's own `.framework-ref`, which is
+what the publish and Generated-only workflows read, so this recipe cannot drift from the
+release a tree was actually built with.
 `chock-market.lock` records a sha256 per published plugin directory, so one package can be
 checked without rebuilding the rest.
 
@@ -94,9 +106,9 @@ SHA. The tag names the release; the SHA is what holds the reviewed bytes still.
 | You want to | Go to |
 | :--- | :--- |
 | Fix or add a policy | [chock-catalog](https://github.com/open-coder-ai/chock-catalog/blob/main/CONTRIBUTING.md) — it reaches every client from there, including this one |
-| Report that a guard did or did not block on your Copilot CLI or VS Code version | an issue on [chock](https://github.com/open-coder-ai/chock/issues/new/choose), which records the witnessed-blocking claims these packages carry; "it fails open where you say it fails closed" is the most useful result you can send |
+| Report that a guard did or did not block on your Copilot CLI or VS Code version | an issue on [chock](https://github.com/open-coder-ai/chock/issues/new/choose), which records what each package claims. No package here carries a witnessed block yet — the claims are read from vendor documentation — so a first-hand "it blocked" or "it fails open where you say it fails closed" is the most useful result you can send |
 | Report a bug in how packages are generated | [chock](https://github.com/open-coder-ai/chock/issues/new/choose), where the emitter lives |
-| Fix this README | here — it is the one hand-written file in the repository |
+| Fix this README | here — it is hand-written, not generated |
 
 ## Part of open-coder-ai
 
