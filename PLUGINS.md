@@ -4,7 +4,7 @@
 
 **26 policies are published here: 14 enforce in this client, 12 are advisory.**
 
-A guard package ships a guard script and a stdlib-only adapter, hooked at `PreToolUse`, and can deny a shell command before the client runs it. It fails open when `python3` or a usable `bash` is unavailable, and asks -- on Codex CLI, denies -- when the guard crashes. A gate package ships the policy's gate and a stdlib-only runner instead, hooked at `PreToolUse` and `Stop`, judging the file a write would create and then re-reading what the turn left on disk. It needs `python3`; without it a fail-open client allows silently, and a gate that cannot reach a decision refuses rather than allowing one it never judged. An advisory package ships skill text; nothing stops a violation.
+A guard package ships a guard script and a stdlib-only adapter, hooked at `PreToolUse`, and can deny a shell command before the client runs it. It fails open when `python3` or a usable `bash` is unavailable. When the guard itself crashes, the hook asks for confirmation rather than allowing silently. A gate package ships the policy's gate and a stdlib-only runner instead, hooked at `PreToolUse` and `Stop`, judging the file a write would create and then re-reading what the turn left on disk. It needs `python3`; without it a fail-open client allows silently, and a gate that cannot reach a decision refuses rather than allowing one it never judged. An advisory package ships skill text; nothing stops a violation.
 
 | plugin | version | in this client | what it does |
 | :--- | :--- | :--- | :--- |
