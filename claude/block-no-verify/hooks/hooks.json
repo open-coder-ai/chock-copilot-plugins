@@ -2,11 +2,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|PowerShell",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/block-no-verify.sh\"",
+            "command": "git -c \"alias.chock-sh=!sh\" chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --guard \"${CLAUDE_PLUGIN_ROOT}/scripts/block-no-verify.py\"",
             "timeout": 30
           }
         ]

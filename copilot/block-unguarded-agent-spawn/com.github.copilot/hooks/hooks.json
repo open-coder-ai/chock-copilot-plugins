@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "bash|powershell|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] && [ -f \"$r/scripts/vscode_copilot.py\" ] || exit 0; exec git -c \"alias.chock-sh=!sh\" chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --guard \"$r/scripts/block-unguarded-agent-spawn.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

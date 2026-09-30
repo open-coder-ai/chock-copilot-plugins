@@ -1,6 +1,6 @@
 {
   "name": "verify-dependency-exists",
-  "description": "Block hallucinated or unknown dependencies before they enter the repo. Watches requirements.txt, pyproject.toml, package.json, and go.mod, and blocks any newly added dependency not present in the allowlist file. Opt-in: disabled by default because it requires a curated allowlist. Enable with `chock enable verify-dependency-exists` after populating .chock/dependency-allowlist.txt. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "description": "Block hallucinated or unknown dependencies before they enter the repo. Watches requirements.txt, pyproject.toml, package.json, and go.mod, and blocks any newly added dependency not present in the allowlist file. Opt-in: disabled by default because it requires a curated allowlist. Enable with `chock enable verify-dependency-exists` after populating .chock/dependency-allowlist.txt. Runs at commit and at agent tool-use (a manifest edit is judged against the file on disk, and at the turn's end against HEAD). [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
   "keywords": [
     "chock",
     "policy-as-code",
@@ -8,7 +8,7 @@
     "block",
     "{'control': 'asi04', 'coverage': 'partial', 'note': 'allowlist gate over newly-added dependencies in requirements.txt, pyproject.toml, package.json, go.mod at commit entry; it checks membership in a curated allowlist, not existence in the upstream registry'}"
   ],
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "chock-core"
   },

@@ -11,9 +11,11 @@ from __future__ import annotations
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass
+from functools import lru_cache
 
 from chock_security.decision import FileText
 from chock_security.pack import facts
+from chock_security.source import blank
 
 _FACTS = facts("java")["flow"]
 
@@ -22,6 +24,9 @@ _FACTS = facts("java")["flow"]
 _NOT_A_DECLARATION = frozenset(
     {"if", "for", "while", "switch", "catch", "try", "else", "do", "synchronized", "return", "new"}
 )
+
+#: A typed declaration is at least a type and a name: `Long id`.
+_TYPE_AND_NAME = 2
 
 _ASSIGNMENT = re.compile(r"(?:^|[^=!<>+\-*/%&|^])(\w+)\s*=(?!=)")
 _NAME_BEFORE_PAREN = re.compile(r"(\w+)\s*\($")
@@ -62,23 +67,30 @@ def _declares(line: str) -> str | None:
 
 
 def _signature(lines: list[str], start: int, name: str) -> tuple[str, int] | None:
-    """The parameter list following the method name, and the line it closes on."""
+    """The parameter list following the method name, and the line it closes on.
+
+    `_declares` read `name(` on `start`'s own line, so the opening parenthesis is found there;
+    the list may close up to twenty lines later.
+    """
+    anchor = re.search(rf"\b{re.escape(name)}\s*\(", lines[start])
+    begin, opening = (anchor.start(), anchor.end() - 1) if anchor else (0, len(lines[start]))
     text = ""
     for offset in range(start, min(start + 20, len(lines))):
         text = f"{text} {lines[offset]}" if text else lines[offset]
-        anchor = re.search(rf"\b{re.escape(name)}\s*\(", text)
-        if not anchor:
-            continue
         depth = 0
-        for index in range(anchor.end() - 1, len(text)):
+        for index in range(opening, len(text)):
             depth += (text[index] == "(") - (text[index] == ")")
             if depth == 0:
-                return text[anchor.start() : index + 1], offset
+                return text[begin : index + 1], offset
     return None
 
 
-def _body(lines: list[str], after: int) -> tuple[tuple[int, str], ...] | None:
-    """The braced block following a signature, or None when the declaration has no body."""
+def _body(lines: list[str], after: int) -> tuple[tuple[tuple[int, str], ...], int] | None:
+    """The braced block following a signature and the line it closes on, or None with no body.
+
+    What follows the opening brace on its own line is body too, so a one-line method
+    (`x(...) { return y; }`) has one, and the text before the brace is never mistaken for it.
+    """
     depth = 0
     opened = False
     collected: list[tuple[int, str]] = []
@@ -90,33 +102,71 @@ def _body(lines: list[str], after: int) -> tuple[tuple[int, str], ...] | None:
             if "{" not in line:
                 continue
             opened = True
-            depth = line.count("{") - line.count("}")
+            rest = line.split("{", 1)[1]
+            depth = 1 + rest.count("{") - rest.count("}")
+            if rest.strip() and rest.strip() != "}":
+                collected.append((offset + 1, rest))
+            if depth <= 0:
+                return tuple(collected), offset
             continue
         depth += line.count("{") - line.count("}")
         if depth <= 0:
-            return tuple(collected)
+            return tuple(collected), offset
         collected.append((offset + 1, line))
     return None
 
 
 def methods(text: FileText) -> list[Method]:
-    """Every method in this file that has a body. Anything unclear is left out, never guessed."""
-    lines = list(text.lines)
+    """Every method in this file that has a body. Anything unclear is left out, never guessed.
+
+    A fresh list each call over one cached parse: two dozen rules walk the same file's methods,
+    and a Method is frozen, so sharing them cannot let one rule change what another reads."""
+    return list(_methods(text.text))
+
+
+#: Distinct file texts one run keeps parsed; a gate run sees a handful, a test session a few thousand.
+_METHOD_CACHE_SIZE = 1024
+
+
+@lru_cache(maxsize=_METHOD_CACHE_SIZE)
+def _methods(text: str) -> tuple[Method, ...]:
+    lines = text.splitlines()
     found: list[Method] = []
     offset = 0
     while offset < len(lines):
         name = _declares(lines[offset])
         signature = _signature(lines, offset, name) if name else None
-        body = _body(lines, signature[1]) if signature else None
-        if name and signature and body:
-            found.append(Method(name, signature[0], body))
-            offset = body[-1][0] if body else offset + 1
+        block = _body(lines, signature[1]) if signature else None
+        if name and signature and block and block[0]:
+            found.append(Method(name, signature[0], block[0]))
+            offset = block[1]
         offset += 1
-    return found
+    return tuple(found)
 
 
 def _mentions(line: str, names: set[str]) -> bool:
-    return any(re.search(rf"\b{re.escape(name)}\b", line) for name in names)
+    """Whether the line USES one of these names: in its code, never inside a string literal or a
+    comment -- `"//item[@sku=$sku]"` names an XPath variable, not the `sku` parameter."""
+    code_only = blank(line)
+    return any(re.search(rf"\b{re.escape(name)}\b", code_only) for name in names)
+
+
+#: `ALLOWED.contains(v) ? v : fallback` -- membership decides whether `v` is used at all, however the
+#: collection is named, so `v` arrives only as one of the collection's own values.
+_MEMBERSHIP = re.compile(r"\.(?:contains|containsKey)\(\s*(\w+)\s*\)\s*\?\s*(\w+)\s*:")
+
+
+#: `value.matches(SAFE_NAME)`: validation against a named pattern. `Matcher.matches()`, with nothing
+#: between its parentheses, is the match itself -- often the very sink being judged -- never a check.
+_VALIDATED = re.compile(r"\.matches\(\s*[A-Z][A-Z0-9_]*\s*\)")
+
+
+def _sanitized(line: str, sanitizers: list[str]) -> bool:
+    return _holds(line, sanitizers) or _VALIDATED.search(line) is not None
+
+
+def _guarded(line: str, tainted: set[str]) -> bool:
+    return any(m.group(1) == m.group(2) and m.group(1) in tainted for m in _MEMBERSHIP.finditer(blank(line)))
 
 
 def _holds(line: str, tokens: list[str]) -> bool:
@@ -130,37 +180,51 @@ def _parameters(signature: str) -> set[str]:
     for parameter in inside.split(","):
         if not _holds(parameter, _FACTS["source_annotations"]):
             continue
-        words = re.findall(r"\w+", parameter)
+        words = re.findall(r"\w+", _without_annotations(parameter))
+        # A number, a boolean, a UUID or a date is parsed before the method sees it: it cannot
+        # carry '../', a host or a shell metacharacter, so it taints nothing downstream.
+        if len(words) >= _TYPE_AND_NAME and words[-2] in _FACTS["scalar_types"]:
+            continue
         if words:
             tainted.add(words[-1])
     return tainted
 
 
-def _retaint(line: str, tainted: set[str]) -> None:
+def _without_annotations(parameter: str) -> str:
+    """The declaration with its annotations (and their arguments) removed: `Long id`, not `@PathVariable(...)`."""
+    return re.sub(r"@\w+(?:\s*\([^()]*\))?", " ", parameter)
+
+
+def _retaint(line: str, tainted: set[str], sanitizers: list[str]) -> None:
     """Follow one assignment: the target carries what its right-hand side carries, and no more."""
     for match in _ASSIGNMENT.finditer(line):
         target = match.group(1)
         right = line[match.end() :]
         carries = _holds(right, _FACTS["source_calls"]) or _mentions(right, tainted)
-        if carries and not _holds(line, _FACTS["sanitizers"]):
+        if carries and not _sanitized(line, sanitizers) and not _guarded(right, tainted):
             tainted.add(target)
         else:
             tainted.discard(target)
 
 
-def reaching(method: Method, sinks: list[str]) -> Iterator[Flow]:
-    """Every line in this body where request data reaches one of these sinks."""
+def reaching(method: Method, sinks: list[str], sanitizers: tuple[str, ...] = ()) -> Iterator[Flow]:
+    """Every line in this body where request data reaches one of these sinks.
+
+    `sanitizers` adds a pack's own checks to the shared list -- an allowlist lookup that only
+    makes sense for redirects, say -- without the pack editing another pack's facts.
+    """
     tainted = _parameters(method.signature)
     annotated = bool(tainted)
+    clean = [*_FACTS["sanitizers"], *sanitizers]
     for line_no, line in method.body:
         direct = _holds(line, _FACTS["source_calls"])
         reached = _holds(line, sinks) and (direct or _mentions(line, tainted))
-        if reached and not _holds(line, _FACTS["sanitizers"]):
+        if reached and not _sanitized(line, clean) and not _guarded(line, tainted):
             yield Flow(line_no, line, "a request parameter" if annotated else "the request")
-        _retaint(line, tainted)
+        _retaint(line, tainted, clean)
 
 
-def flows(text: FileText, sinks: list[str]) -> Iterator[Flow]:
+def flows(text: FileText, sinks: list[str], sanitizers: tuple[str, ...] = ()) -> Iterator[Flow]:
     """Every sink in this file that a method body shows request data reaching."""
     for method in methods(text):
-        yield from reaching(method, sinks)
+        yield from reaching(method, sinks, sanitizers)

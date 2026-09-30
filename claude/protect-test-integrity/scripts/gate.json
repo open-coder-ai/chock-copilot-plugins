@@ -1,0 +1,15 @@
+{
+  "kind": "test_integrity",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "Test integrity: this change deletes a test file, removes more assertions than it adds, or adds a vacuous assertion. Fix the code under test, not the test. If the removal is deliberate (obsolete behaviour, a test moved elsewhere), a person adds 'chock: allow test-integrity' on an added line of that test file and commits from their own shell; the waiver is honoured at commit only, never in the agent (tool use, the turn's end, or a commit with CHOCK_AGENT_COMMIT set), so an agent asks a person.",
+  "params": {
+    "test_path_regex": "(^|/)(tests?/|__tests__/|test_[^/]*\\.py$|[^/]*_test\\.(py|go)$|[^/]*\\.(test|spec)\\.[cm]?[jt]sx?$|src/test/)",
+    "assertion_pattern": "\\b(assert(?:[A-Z_.(\\s]|$)|expect\\(|should\\.|require\\.\\w+\\(|pytest\\.raises\\(|t\\.(Error|Fatal)\\w*\\(|assertThat\\()",
+    "dummy_assertion_pattern": "^\\s*(assert\\s+(True|1)\\s*(#.*|,.*)?$|(self\\.|\\w+\\.)?assertTrue\\((True|true)\\s*[,)]|expect\\(true\\)\\.(toBe\\(true\\)|toBeTruthy\\(\\))|expect\\(1\\)\\.toBe\\(1\\))",
+    "allowlist_pragma": "chock:\\s*allow\\s+test-integrity"
+  }
+}

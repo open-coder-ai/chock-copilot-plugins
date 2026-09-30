@@ -1,0 +1,12 @@
+{
+  "kind": "script",
+  "on": [
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "A markup write retracts an accessibility name the file already carried (alt emptied, aria-label removed, aria-hidden added, flagged element deleted). Restore it, or say the element is decorative where a reviewer sees it.",
+  "params": {
+    "script": "implementations/no-a11y-regression-write.py"
+  },
+  "script_base": "gate"
+}

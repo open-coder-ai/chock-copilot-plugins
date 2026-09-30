@@ -31,10 +31,17 @@ class Finding:
     line: str
     message: str
     verdict: str = DENY
+    #: The rule's CWE ids, so the refusal names the weakness it is evidence of.
+    cwe: tuple[str, ...] = ()
+
+    def summary(self) -> str:
+        """The verdict, rule, CWEs and fix, without the location. The matched line is never echoed."""
+        tag = f" {', '.join(self.cwe)}" if self.cwe else ""
+        return f"[{self.verdict}: {self.rule_id}{tag}] {self.message}"
 
     def render(self) -> str:
-        """One line a human reads in a hook's output. The matched line is never echoed."""
-        return f"{self.path}:{self.line_no}: [{self.verdict}: {self.rule_id}] {self.message}"
+        """One line a human reads in a hook's output."""
+        return f"{self.path}:{self.line_no}: {self.summary()}"
 
 
 @dataclass(frozen=True)
@@ -43,6 +50,12 @@ class FileText:
 
     path: str
     text: str
+
+    def __post_init__(self) -> None:
+        # A byte-order mark is an encoding artefact, not content: left in, it glues itself to the
+        # first line, and a rule anchored there -- `server.error.include-stacktrace=always` as
+        # line 1 of an application.properties a Windows editor saved -- reads nothing.
+        object.__setattr__(self, "text", self.text.removeprefix("\ufeff"))
 
     @property
     def suffix(self) -> str:

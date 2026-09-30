@@ -4,7 +4,7 @@ description: "trigger: remediating accessibility, editing markup, emptying or re
 metadata:
   chock.artifact: rule
   chock.enforcement: block
-  chock.coverage_without_chock: advisory
+  chock.hooks: hooks/hooks.json
 ---
 
 # No Accessibility Regression Rule
@@ -16,4 +16,4 @@ never(break): name|lang an element already had -- remove, empty(alt=""), aria-hi
 on(name_added): record, never_ask; alt="" asserts decorative and only its author may retract a description; present -> present (reworded label) is a copy decision, stay silent
 ```
 
-This skill is advisory: the client reading it has no mechanism to enforce it, and this policy stays advisory even when compiled by `chock` -- it ships rule text, not a blocking hook. See https://github.com/open-coder-ai/chock
+This policy is enforced in this client by the PreToolUse and Stop hooks installed with the plugin, subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

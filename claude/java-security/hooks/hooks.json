@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
+            "command": "git -c \"alias.chock-sh=!sh\" chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
             "timeout": 30
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
+            "command": "git -c \"alias.chock-sh=!sh\" chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --gate \"${CLAUDE_PLUGIN_ROOT}/scripts/gate.json\"",
             "timeout": 30
           }
         ]

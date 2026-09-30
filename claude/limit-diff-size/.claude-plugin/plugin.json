@@ -1,0 +1,16 @@
+{
+  "name": "limit-diff-size",
+  "description": "trigger: staging a large change, committing more than a reviewer can read at once. avoid: one commit carrying hundreds of hand-written lines; lockfile and generated churn is not counted. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "block"
+  ],
+  "version": "0.0.2",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

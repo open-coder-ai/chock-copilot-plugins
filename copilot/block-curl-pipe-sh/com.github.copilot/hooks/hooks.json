@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] && [ -f \"$r/scripts/vscode_copilot.py\" ] || exit 0; exec python3 \"$r/scripts/vscode_copilot.py\" --guard \"$r/scripts/block-curl-pipe-sh.sh\"",
+            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] && [ -f \"$r/scripts/vscode_copilot.py\" ] || exit 0; exec git -c \"alias.chock-sh=!sh\" chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --guard \"$r/scripts/block-curl-pipe-sh.sh\"",
             "timeout": 30
           }
         ]

@@ -1,0 +1,17 @@
+{
+  "name": "block-unguarded-agent-spawn",
+  "description": "Best-effort guard against an agent launching a coding agent with its safety checks off: claude --dangerously-skip-permissions or --permission-mode bypassPermissions, codex --full-auto, --yolo, --dangerously-bypass-approvals-and-sandbox or --sandbox danger-full-access, gemini --yolo, -y or --approval-mode yolo, cursor-agent --force. A spawned agent that never asks and never sandboxes is an unsupervised agent (OWASP ASI10, rogue agents). Read as a parsed command, so `cd repo && claude ...`, `bash -c '...'`, sudo/env wrappers and `npx @openai/codex ...` are caught, while a normal invocation, `codex --sandbox workspace-write`, or a command that only mentions the flag (echo, grep, a commit message) is not. Known bypass classes include shell aliases, wrapper scripts, config files that set the mode, and agents this list does not name. Run the agent with its default approvals; a human decides when an unattended run is acceptable. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "{'control': 'asi10', 'coverage': 'partial', 'note': 'refuses launching a sub-agent with approvals or sandbox switched off from the shell; agent inventory, expiry, monitoring and a kill switch stay with the advisory owasp-asi10-rogue-agents policy'}"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

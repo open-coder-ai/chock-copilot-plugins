@@ -5,7 +5,7 @@
     "tool_use"
   ],
   "action": "block",
-  "message": "java-security: a Java construct a rule denies -- ${} in MyBatis SQL, unescaped template output, unsafe deserialization, a wildcard CORS origin with credentials, wildcard actuator exposure, an unverified JWT parse, a request-chosen file path, an ObjectInputStream over request bytes. Each rule's verdict is allow|deny|ask in .chock/security.json (absent = deny); waive one line with // chock: allow <rule-id>; choose per rule by asking to customize java security, which opens this skill's guided page.",
+  "message": "java-security: a construct one of its rules denies -- the refusal above names the rule, the pack it belongs to and the fix. Each rule's verdict is allow|deny|ask in .chock/security.json, per rule or per pack (java, crypto, spring, jakarta, persistence, templates, logging, build, android, bugs, concurrency, resources, exceptions, performance, style, testing); absent = deny. Only what the change adds is refused: a violation on lines the change leaves alone never blocks it. Only a human reviewer waives a line, with // chock: allow <rule-id>, never the agent: in the agent a waiver counts once a human has committed it. Choose verdicts by asking to customize java security, which opens this skill's guided page.",
   "params": {
     "script": "implementations/java-security-gate.py"
   },
