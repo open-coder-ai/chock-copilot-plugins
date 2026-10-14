@@ -4,7 +4,7 @@
 
 <h1 align="center">chock-copilot-plugins</h1>
 
-<p align="center"><strong>A kill switch for your Copilot agent's wrong moves.</strong></p>
+<p align="center"><strong>Blocks your Copilot agent's wrong moves before they land.</strong></p>
 <p align="center">Chock policies for Copilot CLI and VS Code agent mode — a real <code>PreToolUse</code> deny hook where the client supports it.</p>
 
 <p align="center">
