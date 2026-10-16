@@ -39,11 +39,15 @@ on:
         default: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      # The one write this repository's automation needs: the job commits and pushes the
+      # regenerated tree. Scoped to this job rather than the workflow.
+      contents: write
     steps:
       - name: Check out this distribution repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
@@ -99,7 +103,15 @@ jobs:
           python-version: '3.12'
 
       - name: Install the framework
-        run: pip install ./framework
+        # Dependencies come hash-pinned from this repo's lock; the framework itself is the
+        # checkout above, built into a wheel with the locked build backend and installed with
+        # --no-deps, so pip resolves nothing unpinned. `pip check` fails closed if the
+        # framework ref declares a dependency the lock does not satisfy.
+        run: |
+          pip install --require-hashes -r dist/.github/requirements/framework.txt
+          pip wheel --no-deps --no-build-isolation --wheel-dir wheels ./framework
+          pip install --no-deps wheels/*.whl
+          pip check
 
       # A policy that cannot prove its claims does not get distributed. Running the
       # catalog's own bar again here means a broken policy cannot reach users through a ref
@@ -126,13 +138,18 @@ jobs:
       - name: Validate every package
         run: |
           # Pinned: this binary IS the verification step, so a floating version means the
-          # check itself changes under us without review.
-          npm install -g @anthropic-ai/claude-code@2.1.239
+          # check itself changes under us without review. `npm ci` enforces the lockfile's
+          # integrity hashes; it installs outside dist so nothing lands in the published tree.
+          validator="$RUNNER_TEMP/validator"
+          mkdir -p "$validator"
+          cp dist/.github/validator/package.json dist/.github/validator/package-lock.json "$validator/"
+          npm ci --prefix "$validator"
+          claude="$validator/node_modules/.bin/claude"
           failed=0
           for d in dist/claude/*/; do
-            claude plugin validate "$d" || failed=1
+            "$claude" plugin validate "$d" || failed=1
           done
-          claude plugin validate dist || failed=1
+          "$claude" plugin validate dist || failed=1
           exit $failed
 
       - name: Show what would change

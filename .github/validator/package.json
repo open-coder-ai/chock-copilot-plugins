@@ -1,0 +1,8 @@
+{
+  "name": "chock-plugin-validator",
+  "private": true,
+  "description": "Pins the Claude Code CLI whose `claude plugin validate` checks every package; installed with `npm ci` so the lockfile's integrity hashes are enforced.",
+  "dependencies": {
+    "@anthropic-ai/claude-code": "2.1.239"
+  }
+}

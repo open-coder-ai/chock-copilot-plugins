@@ -67,7 +67,15 @@ jobs:
           python-version: '3.12'
 
       - name: Install the framework from source
-        run: pip install ./framework
+        # Dependencies come hash-pinned from this repo's lock; the framework itself is the
+        # checkout above, built into a wheel with the locked build backend and installed with
+        # --no-deps, so pip resolves nothing unpinned. `pip check` fails closed if the
+        # framework ref declares a dependency the lock does not satisfy.
+        run: |
+          pip install --require-hashes -r dist/.github/requirements/framework.txt
+          pip wheel --no-deps --no-build-isolation --wheel-dir wheels ./framework
+          pip install --no-deps wheels/*.whl
+          pip check
 
       - name: Verify the lockfile and index match the published tree
         working-directory: dist
@@ -89,11 +97,16 @@ jobs:
       - name: Validate every package with Claude Code's own validator
         run: |
           # Pinned: this binary IS the verification step, so a floating version means the
-          # check itself changes under us without review.
-          npm install -g @anthropic-ai/claude-code@2.1.239
+          # check itself changes under us without review. `npm ci` enforces the lockfile's
+          # integrity hashes; it installs outside dist so nothing lands in the published tree.
+          validator="$RUNNER_TEMP/validator"
+          mkdir -p "$validator"
+          cp dist/.github/validator/package.json dist/.github/validator/package-lock.json "$validator/"
+          npm ci --prefix "$validator"
+          claude="$validator/node_modules/.bin/claude"
           failed=0
           for d in dist/claude/*/; do
-            claude plugin validate "$d" || failed=1
+            "$claude" plugin validate "$d" || failed=1
           done
-          claude plugin validate dist || failed=1
+          "$claude" plugin validate dist || failed=1
           exit $failed
