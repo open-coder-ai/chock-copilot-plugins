@@ -2,7 +2,7 @@ name: Security checks
 
 # zizmor audits the workflows (adoption-day: two input-injection sites in publish.yml,
 # six credential-persisting checkouts, and two unpinned validator installs -- all fixed;
-# the three deliberate exceptions live in .github/zizmor.yml with their reasons).
+# the two deliberate exceptions live in .github/zizmor.yml with their reasons).
 # actionlint checks workflow correctness. ShellCheck is deliberately NOT run here: every
 # shell script in this repository is generated from the catalog and verified
 # byte-identical to its source by the generated-only check, and the catalog lints the

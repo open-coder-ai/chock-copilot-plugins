@@ -1,0 +1,12 @@
+# The framework's runtime dependencies, installed hash-pinned before the framework itself
+# (`pip install --no-deps --no-build-isolation ./framework`). Mirrors `dependencies` in
+# open-coder-ai/chock's pyproject.toml at the ref chock-catalog/.framework-ref names, plus
+# its build backend. If that ref changes them, `pip check` in the workflow fails and this
+# file is updated and recompiled:
+#   pip-compile --allow-unsafe --generate-hashes --strip-extras \
+#     --output-file=.github/requirements/framework.txt .github/requirements/framework.in
+pyyaml>=6.0
+jsonschema>=4.18,<5
+referencing>=0.35,<0.38
+agentseam==0.3.5
+setuptools>=77

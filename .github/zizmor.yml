@@ -12,11 +12,3 @@ rules:
     # Credential persistence there is the mechanism, not an oversight.
     ignore:
       - publish.yml
-  adhoc-packages:
-    # The claude-code CLI is npm-installed to run `claude plugin validate` -- there is no
-    # lockfile to install it from in a repo that contains no Node project. The material
-    # risk (a floating version changing the verification under us) is addressed by
-    # pinning the exact version in both install lines.
-    ignore:
-      - generated-only.yml
-      - publish.yml
