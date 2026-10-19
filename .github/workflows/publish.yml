@@ -152,6 +152,37 @@ jobs:
           "$claude" plugin validate dist || failed=1
           exit $failed
 
+      # What the published tree was built from, as commits rather than names: a tag or branch
+      # moves, a SHA does not. The file is written at publish time, not by the build, so
+      # `chock marketplace build` and the generated-only check neither produce nor compare it.
+      - name: Record the commits this tree was built from
+        env:
+          # Dispatch inputs are typed by whoever runs the workflow; expanded by the runner
+          # into shell text they would execute, through the environment they stay data.
+          CATALOG_REF: ${{ inputs.catalog_ref }}
+          FRAMEWORK_REF: ${{ steps.framework.outputs.ref }}
+        run: |
+          catalog_sha="$(git -C catalog rev-parse HEAD)"
+          framework_sha="$(git -C framework rev-parse HEAD)"
+          echo "catalog_sha=$catalog_sha" >> "$GITHUB_ENV"
+          echo "framework_sha=$framework_sha" >> "$GITHUB_ENV"
+          # JSON quoting keeps a ref with a colon or quote valid YAML.
+          python3 - dist/generated_from.yaml "$CATALOG_REF" "$catalog_sha" "$FRAMEWORK_REF" "$framework_sha" <<'PY'
+          import json, sys
+          out, catalog_ref, catalog_sha, framework_ref, framework_sha = sys.argv[1:]
+          q = json.dumps
+          with open(out, "w") as f:
+              f.write("catalog:\n")
+              f.write("  repository: open-coder-ai/chock-catalog\n")
+              f.write(f"  ref: {q(catalog_ref)}\n")
+              f.write(f"  sha: {q(catalog_sha)}\n")
+              f.write("framework:\n")
+              f.write("  repository: open-coder-ai/chock\n")
+              f.write(f"  ref: {q(framework_ref)}\n")
+              f.write(f"  sha: {q(framework_sha)}\n")
+          PY
+          cat dist/generated_from.yaml
+
       - name: Show what would change
         working-directory: dist
         run: |
@@ -185,5 +216,5 @@ jobs:
             exit 0
           fi
           git add -A
-          git commit -m "generated: catalog $CATALOG_REF (framework $FRAMEWORK_REF)"
+          git commit -m "generated: catalog $CATALOG_REF @ $catalog_sha (framework $FRAMEWORK_REF @ $framework_sha)"
           git push
