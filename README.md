@@ -27,7 +27,7 @@ closer to one — and it should be honest about which of those two it is.
 ## Two ways to get these plugins
 
 **This marketplace: no chock on the machine.** Each policy is its own plugin, republished with
-every chock release. You need Python 3.11+ and git, and nothing else. Add this repository as a
+every chock release. You need Python 3.11+, git and a bash (Git for Windows includes one). Add this repository as a
 plugin marketplace in VS Code / GitHub Copilot, then install a plugin by name. See the Copilot
 plugins marketplace and VS Code's agent-plugins docs:
 
@@ -45,7 +45,7 @@ builds a single plugin on your machine from
 
 ```bash
 pip install chock
-chock install --selection '<code>' --client copilot --apply
+chock install --selection <code> --client copilot --apply
 ```
 
 **Use one route for a given policy, never both.** Every copy of a plugin runs its own hook, so
