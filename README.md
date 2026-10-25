@@ -24,25 +24,41 @@ You want it to move fast without being the reason a stray `rm -rf` actually happ
 it to be careful in a prompt is not a guarantee; a plugin that can refuse the command is
 closer to one — and it should be honest about which of those two it is.
 
-## Moved to the chock.sh builder
+## Two ways to get these plugins
 
-These plugins now come from the **[chock.sh builder](https://chock.sh/coding/builder/)**: pick
-policies there and it writes one `chock install` command that builds a single plugin on your machine
-from [chock-catalog](https://github.com/open-coder-ai/chock-catalog). Nothing is downloaded from this
-repository any more.
+**This marketplace: no chock on the machine.** Each policy is its own plugin, republished with
+every chock release. You need Python 3.11+, git and a bash (Git for Windows includes one). Add this repository as a
+plugin marketplace in VS Code / GitHub Copilot, then install a plugin by name. See the Copilot
+plugins marketplace and VS Code's agent-plugins docs:
 
-**Migrate from this marketplace.**
+- <https://github.com/github/copilot-plugins>
+- <https://code.visualstudio.com/docs/agent-customization/agent-plugins>
+
+These packages use the Claude plugin format, which VS Code and GitHub Copilot CLI read
+natively (VS Code auto-detects the format and sets `CLAUDE_PLUGIN_ROOT` for the hook).
+
+**The builder: one plugin, needs chock.** Pick the policies you want at
+**[chock.sh](https://chock.sh/coding/builder/)**; it writes one `chock install` command that
+builds a single plugin on your machine from
+[chock-catalog](https://github.com/open-coder-ai/chock-catalog). That command needs
+`pip install chock`:
+
+```bash
+pip install chock
+chock install --selection <code> --client copilot --apply
+```
+
+**Use one route for a given policy, never both.** Every copy of a plugin runs its own hook, so
+a policy installed from both places runs twice. To switch a policy from one route to the other,
+remove it from the first route before installing it from the second:
 
 1. Remove each plugin you installed from the `chock` marketplace. In Copilot CLI:
-   `copilot plugin uninstall <id>@chock`. In VS Code: `/plugin uninstall <id>@chock` in agent mode.
-2. Remove the marketplace: `copilot plugin marketplace remove chock` in Copilot CLI,
+   `copilot plugin uninstall <id>@chock`. In VS Code: `/plugin uninstall <id>@chock` in agent
+   mode.
+2. To drop the marketplace too: `copilot plugin marketplace remove chock` in Copilot CLI,
    `/plugin marketplace remove chock` in VS Code.
-3. `pip install chock`, then run the command the builder gives you:
-   `chock install --selection '<code>' --client copilot --apply`
 
-**This repository stops publishing on the chock.sh launch day and is archived 30 days later.**
-
-### One policy at a time
+### Builder links, one policy at a time
 
 Each link opens the builder with that one policy preselected for Copilot, pinned to chock-catalog
 commit `e885f918a335e20dfddb4fad0331d4d5b4c5eb43` (the catalog's `main` on 2026-10-21). The pin is
