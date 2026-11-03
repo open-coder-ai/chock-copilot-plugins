@@ -28,97 +28,113 @@
       "id": "java",
       "title": "Core Java",
       "covers": "The JDK itself, whatever framework sits on top: injection into commands, code, reflection, LDAP and XPath; XML parsers; outbound URLs; archives; file paths; Java and polymorphic deserialization; JWT libraries; response headers, cookies, the response body, the session and JavaMail; regex patterns built from request data.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "crypto",
       "title": "Cryptography and TLS",
       "covers": "JCA ciphers, digests, signature algorithms, random numbers, keys and IVs; TLS contexts, trust managers and hostname verifiers; credentials written into the source.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "spring",
       "title": "Spring",
       "covers": "Spring Framework, Boot, Security, Data and Cloud: security filter chains, controllers, SpEL, actuator, and application.properties / application.yml.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "jakarta",
       "title": "Jakarta EE and other frameworks",
       "covers": "Everything that is not Spring: Servlet, JAX-RS, JSF and web.xml; Struts; Quarkus, Micronaut, Helidon, Vert.x and Dropwizard, and their configuration.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "persistence",
       "title": "Persistence",
       "covers": "JDBC, JPA and Hibernate, JdbcTemplate, MyBatis, jOOQ, MongoDB and other NoSQL drivers, and the JDBC URLs and schema settings that configure them.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "templates",
       "title": "Templates and views",
       "covers": "Thymeleaf, JSP and JSTL, JSF Facelets, FreeMarker, Velocity, Pebble, Mustache and Handlebars: output escaping and templates built at run time.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "logging",
       "title": "Logging",
       "covers": "Log4j 2, Logback, SLF4J and java.util.logging: lookups, secrets written to logs, and stack traces sent to the caller.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "build",
       "title": "Build and dependencies",
       "covers": "Maven pom.xml and Gradle build scripts: repositories, checksums, and dependency versions with known remote-code-execution flaws.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "android",
       "title": "Android",
       "covers": "Android apps in Java or Kotlin: WebView, TLS error handling, file modes, components and the AndroidManifest.xml flags that expose them.",
-      "kind": "security"
+      "kind": "security",
+      "default": "deny"
     },
     {
       "id": "bugs",
       "title": "Bug patterns",
       "covers": "Code that compiles and is wrong: identity compared where value was meant, results thrown away, contracts broken between equals and hashCode, arithmetic that overflows or loses precision -- the correctness findings SpotBugs and Sonar report as bugs.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "concurrency",
       "title": "Concurrency",
       "covers": "Threads, locks and shared state: unsafe publication, broken double-checked locking, locks on shared or boxed objects, thread-unsafe formatters held in static fields, and the wait()/notify()/sleep() misuses that break under real contention.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "resources",
       "title": "Resources and lifecycle",
       "covers": "Streams, readers, connections, statements, sockets and executors that must be closed; finalizers, forced garbage collection and exiting the JVM from library code.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "exceptions",
       "title": "Exception handling",
       "covers": "Catch, throw and finally: swallowed exceptions, catching Throwable or NullPointerException, control flow escaping finally, causes discarded, generic exceptions thrown by name.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "performance",
       "title": "Performance",
       "covers": "Allocation and complexity mistakes a profiler would find later: boxing constructors, strings built in loops, the wrong Map iterator, size() checks that should be isEmpty(), and synchronized legacy collections.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "style",
       "title": "Code style",
       "covers": "The conventions Checkstyle and PMD enforce that a reviewer would otherwise repeat: imports, naming, console output in production code, statement shape.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     },
     {
       "id": "testing",
       "title": "Tests",
       "covers": "JUnit and TestNG tests that cannot fail or fail at random: tests with no assertion, sleeps, disabled tests with no reason, assertions written backwards or on the wrong API.",
-      "kind": "quality"
+      "kind": "quality",
+      "default": "allow"
     }
   ],
   "rules": [
@@ -2325,13 +2341,13 @@
   ],
   "current": null,
   "bounds": {
-    "review_before_apply": "Every answer is a row you can tick and edit before anything is written. The java-security skill is the only thing that writes, and only after you have reviewed every row.",
+    "review_before_apply": "Every answer is a row you can tick and edit before anything is written. Nothing writes the file but you: the java-security skill shows you every row and the file, and you write it from your own shell.",
     "relaunch_to_edit": "There is no separate edit mode. An existing selection prefills every rule's current verdict, so changing an answer means reopening this page, not finding a second flow.",
     "sandbox": "This page is a file: inline and offline, nothing it loads reaches outside itself, and nothing it does can reach the network.",
     "accessibility": "Every control is reachable by keyboard and carries a label a screen reader can read; no choice depends on color alone.",
     "theme_choice": "The page renders correctly in both light and dark themes on its own, and offers an explicit toggle besides.",
     "verdicts_are_chosen_never_derived": "A verdict is what you choose for a rule, never something inferred from a question about your stack. There is no field here a stack answer could land in.",
     "plugin_tier_is_not_commit_or_ci": "Installing this policy as an agent plugin reaches that agent's own tool calls and turn end. It does not reach a commit or a CI run -- those need the policy installed in the repository itself with chock.",
-    "nothing_written_from_the_page": "This page writes nothing. It produces a result the java-security skill reads, shows you row by row, refuses to overwrite an existing selection without your say-so, and only then writes .chock/security.json."
+    "nothing_written_from_the_page": "This page writes nothing. It produces a result the java-security skill reads and shows you row by row, with the diff against an existing selection, and a command you run in your own shell to write .chock/security.json. The agent never writes it."
   }
 }

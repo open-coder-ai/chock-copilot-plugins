@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "ask",
+  "message": "Possible secret: a high-entropy value assigned to a secret-like key, a vendor token whose structure checks out, or a card number. Move it to an environment variable or a secret store and reference it; rotate it if it was ever real. A person who has checked a test value keeps it with 'pragma: allowlist secret' on the same line (a person's commit, push or CI honours it; in the agent only a line already in HEAD counts). An agent asks a person; it never writes the pragma.",
+  "params": {
+    "script": "implementations/scan-secrets-entropy-gate.py"
+  },
+  "script_base": "gate"
+}

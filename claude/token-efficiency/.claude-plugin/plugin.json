@@ -7,10 +7,10 @@
     "rule",
     "advise"
   ],
-  "version": "0.1.0",
+  "version": "0.1.3",
   "author": {
     "name": "chock-core"
   },
   "license": "Apache-2.0",
-  "repository": "https://github.com/open-coder-ai/chock"
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
 }

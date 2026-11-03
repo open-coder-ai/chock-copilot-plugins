@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "This file is a secret, or holds one: a private key or key store, a cloud, registry or tool credential file, Terraform state, a dotenv file with live values, or a browser credential store. Keep it out of the repository: add it to .gitignore, load the value from the environment or a secret manager, and commit a template with placeholders (.env.example) instead. Rotate any credential that was written or pushed. There is no inline waiver; a person who has reviewed a fixture commits it from their own shell.",
+  "params": {
+    "script": "implementations/scan-secret-files-gate.py"
+  },
+  "script_base": "gate"
+}

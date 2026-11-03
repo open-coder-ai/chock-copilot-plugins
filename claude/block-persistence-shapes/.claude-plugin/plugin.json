@@ -1,0 +1,18 @@
+{
+  "name": "block-persistence-shapes",
+  "description": "Best-effort guard against shell commands that publish or keep access after the session: npm/pnpm/yarn/twine/ poetry/uv/cargo/gem publish, docker/podman push and login, npm token and registry edits, repos made public; user services, launch agents, cron/at/schtasks, Run keys, authorized_keys, runner registration, sudoers, setuid bits, detached downloads. Asks on gh release create, git remote add, git push to a URL. Misses: scripts, aliases, system units, shell rc files, ssh-run commands. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "asi03",
+    "asi10"
+  ],
+  "version": "0.0.6",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

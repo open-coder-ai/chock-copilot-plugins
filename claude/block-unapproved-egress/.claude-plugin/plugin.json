@@ -1,17 +1,17 @@
 {
   "name": "block-unapproved-egress",
-  "description": "Best-effort guard against exfiltration through the tool channel: a network command (curl/wget/Invoke-WebRequest) that UPLOADS data -- POST/PUT, --data/--form, --upload-file, --post-file -- to a host outside the egress allowlist. The allowlist defaults to package registries and code hosting and is meant to be extended with your org's own domains; a host matches by exact name or \".<entry>\" suffix. Fetch-only traffic is left alone. A schemeless or protocol-relative target is checked too, from the last non-flag token, but only when no explicit http(s):// URL appears -- once one has, it alone decides. Options are parsed as curl reads them, so -sd @file is an upload. Tool-time FLOOR, not a network sandbox. Known bypasses: ~/.curlrc, obfuscated payloads, non-standard clients, a language runtime. Escape: 'pragma: allowlist egress'. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
+  "description": "Best-effort guard on the tool channel: blocks sending data to a host outside the allowlist (.chock/egress-allowlist.txt, else a built-in registry list): curl/wget/iwr uploads, nc/socat/telnet, scp/rsync/sftp, ssh commands, aws/gsutil/az uploads, git push|remote add URLs, $(..)/$VAR in a URL or host. Asks on interpreter HTTP one-liners, gh gist/--body-file, curl --proxy/--resolve/Host:. Blocks ~/.curlrc writes. A floor, not a sandbox: other clients, runtimes, obfuscation. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
   "keywords": [
     "chock",
     "policy-as-code",
     "rule",
     "advise",
-    "{'control': 'asi02', 'coverage': 'partial', 'note': 'raises the floor against tool-channel data exfiltration to unapproved hosts; a tool-time guard, not a network sandbox -- obfuscated, non-standard-client and runtime egress remain out of reach'}"
+    "asi02"
   ],
-  "version": "0.1.0",
+  "version": "0.2.6",
   "author": {
     "name": "chock-core"
   },
   "license": "Apache-2.0",
-  "repository": "https://github.com/open-coder-ai/chock"
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
 }

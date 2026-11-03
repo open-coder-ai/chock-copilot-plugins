@@ -1,0 +1,53 @@
+{
+  "kind": "content_regex",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "This line switches git hooks off for everyone who runs this file (a hook-skip option on a git command, a new hooks path (core.hooksPath), a hook manager's off-switch variable such as HUSKY set to zero, or an uninstall). Fix the failing hook instead. A person who has reviewed it may keep it with 'pragma: allowlist hook-bypass' on the same line (a person's commit honours it; in the agent only a line already in HEAD counts). An agent asks a person; it never writes the pragma.",
+  "paths": [
+    ".husky/*",
+    "*/.husky/*",
+    ".githooks/*",
+    "*/.githooks/*",
+    "lefthook*.y*ml",
+    "*/lefthook*.y*ml",
+    ".lefthook*.y*ml",
+    "*/.lefthook*.y*ml",
+    "package.json",
+    "*/package.json",
+    "Makefile",
+    "*/Makefile",
+    "makefile",
+    "*/makefile",
+    "GNUmakefile",
+    "*/GNUmakefile",
+    "*.mk",
+    "justfile",
+    "*/justfile",
+    "Justfile",
+    "*/Justfile",
+    ".justfile",
+    "*/.justfile",
+    "*.sh",
+    "*.bash",
+    "*.zsh",
+    ".envrc",
+    "*/.envrc",
+    ".hooks/*",
+    "*/.hooks/*",
+    "git-hooks/*",
+    "*/git-hooks/*",
+    "lefthook*.json",
+    "*/lefthook*.json",
+    "lefthook*.toml",
+    "*/lefthook*.toml",
+    "*.just"
+  ],
+  "params": {
+    "scan": "added_lines",
+    "allowlist_pragma": "pragma:\\s*allowlist\\s+hook-bypass",
+    "content_pattern": "^(?!\\s*(?:#|//))(?=[^\\n]*?(?:no-[v]er|(?i:hooks[p]ath)|[H]USKY|[L]EFTHOOK|[S]KIP|[P]RE_COMMIT|uninstall)).*?(?:(?:\\b[g]it\\b|\\$[({]?(?i:[g]it)\\b[)}]?['\"]?)(?>(?:\\\"[^\\\"\\n]{0,300}\\\"|'[^'\\n]{0,300}'|[^;&|\\n\\\"']){0,400}?\\s(?:commit|push|merge|am|rebase|pull|cherry-pick|revert)\\b)(?>(?:\\\"[^\\\"\\n]{0,300}\\\"|'[^'\\n]{0,300}'|[^;&|\\n\\\"']){0,400}?\\s--no-[v]er(?:i|if|ify)(?![\\w-]))|\\b[c]onfig\\b(?![^;&|\\n]{0,400}?(?:--get|--unset|--list|--remove-section|\\s(?:get|unset|list)\\s))[^;&|\\n]{0,400}?\\s['\"]?(?i:[c]ore\\.hooks[p]ath)['\"]?(?:\\s*=|\\s+(?!\\d*[<>])[^\\s;|&)<>`'\"#]|\\s+['\"][^'\"\\s])|(?:-c\\s*|--config-env[= ])['\"]?(?i:[c]ore\\.hooks[p]ath)=|[G]IT_CONFIG_KEY_\\d+['\"]?\\s*(?:[:?+]?=|:)\\s*['\"]?(?i:[c]ore\\.hooks[p]ath)|[G]IT_CONFIG_PARAMETERS[^\\n]{0,400}?(?i:[c]ore\\.hooks[p]ath)|(?<![\\w${-])(?:[H]USKY|[L]EFTHOOK)['\"]?(?:\\s*[:?+]?=\\s*|:\\s*)['\"]?(?i:0|false|off|no)\\b|\\$\\{(?:[H]USKY|[L]EFTHOOK):?=(?i:0|false|off|no)\\}|(?<![\\w${-])(?:[H]USKY_SKIP_HOOKS|[L]EFTHOOK_EXCLUDE|[L]EFTHOOK_CONFIG|[P]RE_COMMIT_ALLOW_NO_CONFIG)['\"]?(?:\\s*[:?+]?=\\s*|:\\s*)['\"]?[\\w$./]|(?<![\\w${-])[S]KIP['\"]?(?:[:?+]?=|\\s+[:?+]?=\\s+|:\\s+|(?<=[\"']):\\s*)['\"]?(?!(?i:true|false|yes|no|on|off)(?![\\w-]))[A-Za-z_]|\\b(?:[p]re[-_]commit|[l]efthook|[h]usky)\\s+uninstall\\b)"
+  }
+}

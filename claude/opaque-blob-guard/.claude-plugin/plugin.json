@@ -1,0 +1,17 @@
+{
+  "name": "opaque-blob-guard",
+  "description": "Warns (observe rollout; never refuses yet) when a change adds or edits, in tests/, fixtures/, testdata/, spec/, m4/, vendor/, gradle/wrapper/: a file whose first bytes are an archive, executable, wasm or database signature (any extension), a random-looking non-media file over 100 KB, or a symlink out of the repo; m4/configure/Makefile text that decodes and evaluates; a gradle wrapper jar changed with no new distributionSha256Sum. Misses text-encoded or prefixed payloads, other folders. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "asi04"
+  ],
+  "version": "0.0.5",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

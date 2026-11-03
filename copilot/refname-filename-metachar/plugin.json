@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "refname-filename-metachar",
+  "version": "0.1.5",
+  "description": "Refuses names a shell, CI step or git can misread. Paths a change adds or renames into (commit, agent writes), and branches and tags pushed (pre-push), with command substitution, an IFS expansion, a backtick, ; & | < >, a double quote, a backslash, a control or bidi character, a base64-decode shape, a leading dash or trailing space or dot in a segment, or a '..' segment; a ref also with a full commit id's shape. A guard refuses git and file commands creating such names. No waiver. Friction, not a boundary. [Shell guard: Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs). With no working Python it exits 2; without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently -- VS Code agent mode honours that ask and it overrides the client's own auto-approve. Write gate: Session-enforced at the turn's end by a Stop hook; needs git and a Python 3.11+. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Both halves: Enforces only in a client that reads the com.github.copilot namespace and tells the hook where the package lives; a client that exports no plugin-root variable (VS Code's agent-plugin format exports none) runs the hook, which then exits 0 and checks nothing; a root that is set but lacks the bundled hook exits 2 and refuses the call.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "hook",
+      "enforcement": "block",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

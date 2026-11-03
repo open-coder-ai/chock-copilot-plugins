@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "A known-malicious package version, compromised action ref or IOC file name was added. Use a release outside the list (the cited advisory names the fixed one) or drop the dependency, pin the action to a reviewed commit, or delete the file. The list changes only in a reviewed pull request to this policy's data/ioc.json; there is no in-line waiver.",
+  "params": {
+    "script": "implementations/compromised-package-ioc-gate.py"
+  },
+  "script_base": "gate"
+}

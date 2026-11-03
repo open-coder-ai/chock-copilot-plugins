@@ -1,19 +1,19 @@
 ---
 name: verify-dependency-exists
-description: "Block hallucinated or unknown dependencies before they enter the repo. Watches requirements.txt, pyproject.toml, package.json, and go.mod, and blocks any newly added dependency not present in the allowlist file. Opt-in: disabled by default because it requires a curated allowlist. Enable with `chock enable verify-dependency-exists` after populating .chock/dependency-allowlist.txt. Runs at commit and at agent tool-use (a manifest edit is judged against the file on disk, and at the turn's end against HEAD)."
+description: "Allowlist gate for new dependencies; no registry lookup. Reads Python, Node, Rust, Ruby, PHP, JVM, .NET, Go, Elixir, Dart and Swift manifests (read, never run); blocks an added name missing from .chock/dependency-allowlist.txt, asks on a lockfile-only one. Not read: computed lists, sources, versions, some forms (see docs). No allowlist file (plugin-only installs): a manifest change warns, never blocks. Repo form is opt-in: seed, observe, `chock enable`. Runs: commit, agent write, turn's end."
 metadata:
   chock.artifact: hook
   chock.enforcement: block
   chock.hooks: com.github.copilot/hooks/hooks.json
 ---
 
-# Verify Dependency Exists
+# Dependency Allowlist
 
-Block hallucinated or unknown dependencies before they enter the repo. Watches requirements.txt, pyproject.toml, package.json, and go.mod, and blocks any newly added dependency not present in the allowlist file. Opt-in: disabled by default because it requires a curated allowlist. Enable with `chock enable verify-dependency-exists` after populating .chock/dependency-allowlist.txt. Runs at commit and at agent tool-use (a manifest edit is judged against the file on disk, and at the turn's end against HEAD).
+Allowlist gate for new dependencies; no registry lookup. Reads Python, Node, Rust, Ruby, PHP, JVM, .NET, Go, Elixir, Dart and Swift manifests (read, never run); blocks an added name missing from .chock/dependency-allowlist.txt, asks on a lockfile-only one. Not read: computed lists, sources, versions, some forms (see docs). No allowlist file (plugin-only installs): a manifest change warns, never blocks. Repo form is opt-in: seed, observe, `chock enable`. Runs: commit, agent write, turn's end.
 
 ```
-on(commit|tool_use): block(dependency_allowlist) manifests=requirements.txt|pyproject.toml|package.json|... allowlist_file=.chock/dependency-allowlist.txt
-Unknown dependency blocked. Verify the package exists in the official registry, then ask a person to add it to .chock/dependency-allowlist.txt -- an agent may not edit that file (protect-agent-config).
+on(commit|tool_use): block(script) script=dependency-manifests.py
+Unknown dependency blocked: it is not in .chock/dependency-allowlist.txt. This gate checks the allowlist only and makes no registry lookup, so confirm the package exists in its official registry and is the intended one first. If you are an agent, ask a person to add the name; do not edit that file yourself (protect-agent-config). If you are a person, add the name to the file.
 ```
 
 This policy is enforced in this client by the Stop hook installed with the plugin: the write itself is not judged here, because the client records no write-tool vocabulary, and what the turn left on disk is judged at its end instead. Subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

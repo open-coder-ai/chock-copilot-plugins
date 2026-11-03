@@ -7,7 +7,7 @@ metadata:
   chock.coverage_without_chock: advisory
 ---
 
-# Token Efficiency Rule
+# Token Efficiency
 
 trigger: large command output, broad searches, re-reading unchanged files, front-loading references. avoid: wasting context window on low-signal content.
 
@@ -16,4 +16,4 @@ cap(tool_output): 4000_bytes; cap(search_results): top_3; cap(retry_loops): max_
 prefer: targeted_reads|structured_output|on_demand_refs; never: re-read(unchanged_file)|load_all_upfront
 ```
 
-This skill is advisory: the client reading it has no mechanism to enforce it, and this policy stays advisory even when compiled by `chock` -- it ships rule text, not a blocking hook. See https://github.com/open-coder-ai/chock
+This skill is advisory: the client reading it has no mechanism to enforce it. The same policy compiled by `chock` warns on tool calls. See https://github.com/open-coder-ai/chock

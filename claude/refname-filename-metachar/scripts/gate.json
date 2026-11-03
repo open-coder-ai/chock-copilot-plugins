@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "A path this change adds or renames into has a name a shell, a CI step or git can misread: command substitution, an IFS expansion, a backtick, a shell operator, a double quote, a backslash, a control or bidi character, a base64-decode shape, a segment starting with '-' or ending in a space or '.', or a '..' segment. Rename it with letters, digits, spaces inside, '.', '_', '-' and '/'. No waiver: if the name is truly required, a person creates it from their own shell.",
+  "params": {
+    "script": "implementations/refname-filename-metachar-gate.py"
+  },
+  "script_base": "gate"
+}

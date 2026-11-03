@@ -1,19 +1,19 @@
 ---
 name: block-unguarded-agent-spawn
-description: "Best-effort guard against an agent launching a coding agent with its safety checks off: claude --dangerously-skip-permissions or --permission-mode bypassPermissions, codex --full-auto, --yolo, --dangerously-bypass-approvals-and-sandbox or --sandbox danger-full-access, gemini --yolo, -y or --approval-mode yolo, cursor-agent --force. A spawned agent that never asks and never sandboxes is an unsupervised agent (OWASP ASI10, rogue agents). Read as a parsed command, so `cd repo && claude ...`, `bash -c '...'`, sudo/env wrappers and `npx @openai/codex ...` are caught, while a normal invocation, `codex --sandbox workspace-write`, or a command that only mentions the flag (echo, grep, a commit message) is not. Known bypass classes include shell aliases, wrapper scripts, config files that set the mode, and agents this list does not name. Run the agent with its default approvals; a human decides when an unattended run is acceptable."
+description: "Best effort. Refuses agents with safety off: claude --dangerously-skip-permissions, bypassPermissions, wildcard --allowedTools; codex --full-auto, --yolo, -a never, danger-full-access; gemini --yolo; cursor-agent --force; aider --yes-always; copilot --allow-all-tools; amp, cline, goose, opencode auto-approve; DeepSeek Harness 127.0.0.1:3080/api calls lifting sandbox/approvals (CVE-2026-82533). Sees through bash -c, sudo, npx. Misses: config, aliases, scripts, ssh, other dsh ports, file bodies."
 metadata:
   chock.artifact: rule
   chock.enforcement: advise
   chock.hooks: com.github.copilot/hooks/hooks.json
 ---
 
-# Block Unguarded Agent Spawn
+# Block Agents Started With Safety Off
 
-Best-effort guard against an agent launching a coding agent with its safety checks off: claude --dangerously-skip-permissions or --permission-mode bypassPermissions, codex --full-auto, --yolo, --dangerously-bypass-approvals-and-sandbox or --sandbox danger-full-access, gemini --yolo, -y or --approval-mode yolo, cursor-agent --force. A spawned agent that never asks and never sandboxes is an unsupervised agent (OWASP ASI10, rogue agents). Read as a parsed command, so `cd repo && claude ...`, `bash -c '...'`, sudo/env wrappers and `npx @openai/codex ...` are caught, while a normal invocation, `codex --sandbox workspace-write`, or a command that only mentions the flag (echo, grep, a commit message) is not. Known bypass classes include shell aliases, wrapper scripts, config files that set the mode, and agents this list does not name. Run the agent with its default approvals; a human decides when an unattended run is acceptable.
+Best effort. Refuses agents with safety off: claude --dangerously-skip-permissions, bypassPermissions, wildcard --allowedTools; codex --full-auto, --yolo, -a never, danger-full-access; gemini --yolo; cursor-agent --force; aider --yes-always; copilot --allow-all-tools; amp, cline, goose, opencode auto-approve; DeepSeek Harness 127.0.0.1:3080/api calls lifting sandbox/approvals (CVE-2026-82533). Sees through bash -c, sudo, npx. Misses: config, aliases, scripts, ssh, other dsh ports, file bodies.
 
 ```
-never(spawn_agent): claude(--dangerously-skip-permissions|--permission-mode_bypassPermissions), codex(--full-auto|--yolo|--dangerously-bypass-approvals-and-sandbox|--sandbox_danger-full-access), gemini(--yolo|-y|--approval-mode_yolo), cursor-agent(--force)
-if(unattended_run_needed): propose_to_human; await(approval)  # spawn with default approvals and sandbox
+never(spawn_agent): claude(--dangerously-skip-permissions|bypassPermissions|--allowedTools_*), codex(--full-auto|--yolo|-a_never|--sandbox_danger-full-access), gemini(--yolo|-y|--approval-mode_yolo), cursor-agent(--force|-f), aider(--yes-always), copilot(--allow-all-tools), amp|cline|goose|opencode(auto-approve flags)
+never(http_to(dsh 127.0.0.1:3080/api)+body(danger-full-access|approval_never)); if(unattended_run_needed|wider_access): ask_person; person_starts_it
 ```
 
-This package ships a PreToolUse hook under com.github.copilot/. It enforces only in a client that both reads that namespace AND tells the hook where the package lives; a client that exports no plugin-root variable runs the hook, which then allows -- so treat this package as advisory unless a deny has been witnessed in your own client. A client that ignores the namespace gets this text only. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock
+This package ships a PreToolUse hook under com.github.copilot/. It enforces only in a client that both reads that namespace AND tells the hook where the package lives. A client that exports no plugin-root variable (VS Code's agent-plugin format exports none) runs the hook, which then exits 0 and checks nothing; a root that is set but lacks the bundled hook exits 2 and refuses the call. A client that ignores the namespace gets this text only. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

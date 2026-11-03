@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "guard-deletion: this change removes a check or a security mitigation (the refusal above names the file, line and family). Keep it, or move its replacement into the same hunk. A removed guard asks a person; a removed or weakened mitigation (hardening flag, security header, cookie attribute, TLS verification, row-level security, file mode) is refused. A person who has reviewed the removal waives one line with 'pragma: allowlist guard-removal' or 'pragma: allowlist mitigation-removal'; an agent's own pragma is itself a finding, and counts only on a removed line that is already committed.",
+  "params": {
+    "script": "implementations/guard-deletion-gate.py"
+  },
+  "script_base": "gate"
+}

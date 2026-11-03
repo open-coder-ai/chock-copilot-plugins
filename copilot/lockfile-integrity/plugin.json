@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "lockfile-integrity",
+  "version": "0.0.3",
+  "description": "Script gate (commit, agent write, CI) over npm, yarn, pnpm, bun, poetry, uv, Pipfile, Cargo, go.sum, Gemfile, composer and NuGet locks. Blocks: source off the registry list or not https, missing hash, hash changed for a locked version, unpinned git source, unreadable lock. Asks: SHA-1-only hash, transitive install script, lock or manifest moved alone, go.sum lines removed, lock ignored or deleted. Judges what a change adds. Friction, not a security boundary. [Session-enforced at the turn's end by a Stop hook; needs git and a Python 3.11+. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Enforces only in a client that reads the com.github.copilot namespace and tells the hook where the package lives; a client that exports no plugin-root variable (VS Code's agent-plugin format exports none) runs the hook, which then exits 0 and checks nothing; a root that is set but lacks the bundled hook exits 2 and refuses the call.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block",
+    "asi04"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "hook",
+      "enforcement": "block",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

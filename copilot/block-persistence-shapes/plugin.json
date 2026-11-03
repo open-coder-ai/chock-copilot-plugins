@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "block-persistence-shapes",
+  "version": "0.0.6",
+  "description": "Best-effort guard against shell commands that publish or keep access after the session: npm/pnpm/yarn/twine/ poetry/uv/cargo/gem publish, docker/podman push and login, npm token and registry edits, repos made public; user services, launch agents, cron/at/schtasks, Run keys, authorized_keys, runner registration, sudoers, setuid bits, detached downloads. Asks on gh release create, git remote add, git push to a URL. Misses: scripts, aliases, system units, shell rc files, ssh-run commands. [Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs). With no working Python it exits 2; without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently -- VS Code agent mode honours that ask and it overrides the client's own auto-approve.]",
+  "author": {
+    "name": "chock-core"
+  },
+  "repository": "https://github.com/open-coder-ai/chock-catalog",
+  "license": "Apache-2.0",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise",
+    "asi03",
+    "asi10"
+  ],
+  "extensions": {
+    "io.github.open-coder-ai": {
+      "artifact": "rule",
+      "enforcement": "advise",
+      "hooks": "com.github.copilot/hooks/hooks.json"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "refname-filename-metachar",
+  "description": "Refuses names a shell, CI step or git can misread. Paths a change adds or renames into (commit, agent writes), and branches and tags pushed (pre-push), with command substitution, an IFS expansion, a backtick, ; & | < >, a double quote, a backslash, a control or bidi character, a base64-decode shape, a leading dash or trailing space or dot in a segment, or a '..' segment; a ref also with a full commit id's shape. A guard refuses git and file commands creating such names. No waiver. Friction, not a boundary. [Shell guard: Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently. Write gate: Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "hook",
+    "block"
+  ],
+  "version": "0.1.5",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}
