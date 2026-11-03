@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "warn",
+  "message": "A file that a developer tool runs on its own (an agent hook or helper, an environment override, an auto-approval, a task that runs on folder open, a dev container command, a shell-entry or git hook file, a git config that runs a program) was added or changed, or such a config cannot be read. Remove it, or ask a person to review it. A reviewed line may carry 'chock: allow <rule-id>' where the file has comments; a person adds it in their own commit. In the agent a waiver counts only for a line already committed in HEAD, so an agent asks the person rather than writing it.",
+  "params": {
+    "script": "implementations/agent-devenv-autoexec-gate.py"
+  },
+  "script_base": "gate"
+}

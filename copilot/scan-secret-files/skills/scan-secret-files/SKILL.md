@@ -1,0 +1,19 @@
+---
+name: scan-secret-files
+description: "Friction, not a security boundary: flags files that are secrets by name or content -- private keys and key stores, Google service-account/OAuth JSON, kubeconfig users, AWS, npm, PyPI, netrc, git, pgpass, docker, Composer, NuGet, Maven credentials, tfstate/tfvars, non-template .env, framework secret files, browser stores. Blocks; encrypted keys, notebook outputs and test, fixture, example, doc, lock and eval paths ask. Misses: renamed binary stores other than PKCS#12/JKS/DER, unlisted secret names, values split or encoded."
+metadata:
+  chock.artifact: hook
+  chock.enforcement: block
+  chock.hooks: com.github.copilot/hooks/hooks.json
+---
+
+# Scan Secret Files
+
+Friction, not a security boundary: flags files that are secrets by name or content -- private keys and key stores, Google service-account/OAuth JSON, kubeconfig users, AWS, npm, PyPI, netrc, git, pgpass, docker, Composer, NuGet, Maven credentials, tfstate/tfvars, non-template .env, framework secret files, browser stores. Blocks; encrypted keys, notebook outputs and test, fixture, example, doc, lock and eval paths ask. Misses: renamed binary stores other than PKCS#12/JKS/DER, unlisted secret names, values split or encoded.
+
+```
+on(commit|tool_use): block(script) script=scan-secret-files-gate.py
+This file is a secret, or holds one: a private key or key store, a cloud, registry or tool credential file, Terraform state, a dotenv file with live values, or a browser credential store. Keep it out of the repository: add it to .gitignore, load the value from the environment or a secret manager, and commit a template with placeholders (.env.example) instead. Rotate any credential that was written or pushed. There is no inline waiver; a person who has reviewed a fixture commits it from their own shell.
+```
+
+This policy is enforced in this client by the Stop hook installed with the plugin: the write itself is not judged here, because the client records no write-tool vocabulary, and what the turn left on disk is judged at its end instead. Subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

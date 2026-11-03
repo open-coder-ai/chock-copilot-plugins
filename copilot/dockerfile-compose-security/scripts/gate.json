@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "A Dockerfile or compose change weakens the container's isolation or supply chain (each finding names its rule, weakness and fix). Pin images by tag and digest, end the final stage with a non-root USER, keep TLS and signature checks on, pass secrets with RUN --mount=type=secret or compose secrets, and drop privileged, broad cap_add, host namespaces and host-root or Docker socket mounts. Deny-tier findings block; ask-tier findings ask a person. A person may keep a reviewed finding with '# chock: allow <rule-id>' on the line or the comment line above it; in the agent only a line already committed in HEAD counts, so an agent asks a person.",
+  "params": {
+    "script": "implementations/dockerfile-compose-security-gate.py"
+  },
+  "script_base": "gate"
+}

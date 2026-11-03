@@ -1,16 +1,16 @@
 {
   "name": "protect-main-branch",
-  "description": "Block direct commits and pushes to main or master. Enforced at commit time by reading the current branch, and at push time by parsing the refs the agent is pushing. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "description": "Keeps agents off main and master: a git hook reads the current branch at commit time and parses the refs being pushed at push time. The hook refuses a violation only where it is installed. As skill text alone this is advice, and nothing stops one. [Advisory skill only; enforcement needs chock installed in the repo.]",
   "keywords": [
     "chock",
     "policy-as-code",
     "hook",
     "block"
   ],
-  "version": "0.0.1",
+  "version": "0.0.4",
   "author": {
     "name": "chock-core"
   },
   "license": "Apache-2.0",
-  "repository": "https://github.com/open-coder-ai/chock"
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
 }

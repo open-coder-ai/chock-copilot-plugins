@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "warn",
+  "message": "This change adds text a reader cannot see (a comment or hidden element that reads as an instruction, white or zero-size text) or a URL that can carry data out (a secret word or data-shaped part in its query or path, a remote embed, a dictionary of image URLs). Remove the hidden text or make it visible, and link only to fixed URLs that carry nothing from the repository or the session. A person may keep a reviewed line with a comment line just above it that holds only 'chock: allow scan-hidden-content', committed from their own shell; in the agent only a waiver already committed in HEAD counts, so an agent asks the person instead.",
+  "params": {
+    "script": "implementations/scan-hidden-content-gate.py"
+  },
+  "script_base": "gate"
+}

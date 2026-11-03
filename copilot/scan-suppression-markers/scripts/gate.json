@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "ask",
+  "message": "This change adds a scanner suppression: an inline ignore marker, an ignore-file entry or skip key, or a CI security step told to pass when it fails. Fix what the scanner reports instead of silencing it. If the finding is a reviewed false positive, a person keeps the suppression by committing from their own shell with CHOCK_ALLOW=scan-suppression-markers for that one commit; an agent asks the person and never sets it.",
+  "params": {
+    "script": "implementations/scan-suppression-markers-gate.py"
+  },
+  "script_base": "gate"
+}

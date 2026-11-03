@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "This change points a package manager at an unapproved or clear-text registry, writes a credential into its config, turns TLS or checksum verification off, lets dependencies run install scripts, or redirects where packages come from. Use https registries on the default hosts, read tokens from environment references and keep verification on. An internal mirror is added by a person to .chock/registry-hosts.txt in a reviewed commit. A finding that only asks (extra index, replace, missing cooldown) is kept by a person committing from their own shell with CHOCK_ALLOW=registry-config; an agent asks the person and never sets it.",
+  "params": {
+    "script": "implementations/registry-config-gate.py"
+  },
+  "script_base": "gate"
+}

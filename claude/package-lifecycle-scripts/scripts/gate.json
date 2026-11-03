@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "A change adds or edits code that runs when a package is installed or built (an npm lifecycle script, setup.py command override, build.rs, MSBuild Exec, gemspec extension and the like), or a git or URL dependency with no commit pin. Whoever controls that code or URL runs it on every machine that installs the package. Keep install and build steps offline and explicit: download to a file, verify a pinned checksum, run it as a separate reviewed step, and pin git dependencies to a 40-hex commit. A person who has reviewed the change approves the ask; there is no waiver yet.",
+  "params": {
+    "script": "implementations/package-lifecycle-scripts-gate.py"
+  },
+  "script_base": "gate"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "review-like-a-red-team",
+  "description": "trigger: finishing or committing a diff that touches code, build or CI config, dependencies or agent config; a plan adding a handler, parser, auth path, crypto or sink; an ask-tier gate finding. Self-review of the diff in twelve red-team techniques, triaged by references/triage.json, reported as findings with exploit scenarios. Advisory: refuses nothing, writes no waiver, lowers no gate. [Advisory skill only; enforcement needs chock installed in the repo.]",
+  "keywords": [
+    "chock",
+    "policy-as-code",
+    "rule",
+    "advise"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "chock-core"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/open-coder-ai/chock-catalog"
+}

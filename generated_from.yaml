@@ -1,0 +1,8 @@
+catalog:
+  repository: open-coder-ai/chock-catalog
+  ref: "1e60d211c1bb767152c6ab0167932da06ab3a10f"
+  sha: "1e60d211c1bb767152c6ab0167932da06ab3a10f"
+framework:
+  repository: open-coder-ai/chock
+  ref: "5a4b6287a46e07f9f856d9bbe10622bd1ff2e021"
+  sha: "5a4b6287a46e07f9f856d9bbe10622bd1ff2e021"

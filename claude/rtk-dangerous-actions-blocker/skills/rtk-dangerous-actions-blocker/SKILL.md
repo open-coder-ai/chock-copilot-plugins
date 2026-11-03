@@ -1,19 +1,19 @@
 ---
 name: rtk-dangerous-actions-blocker
-description: "Carved out for rtk-ai/rtk#1007: rtk's own decision table as a chock policy (rtk's own hooks may not block). Refuses rm -rf on root, home, parent or absolute paths; git push --force and '+' refspecs (not --force-with-lease); reads of credential files (.env, *.pem, *.key, id_rsa, ~/.ssh, ~/.aws) by cat, grep, rg, awk, sed, jq and the like or by `< file`, and echoes or inline literals of *_API_KEY/*_SECRET/*_TOKEN; DROP/TRUNCATE/unscoped DELETE through psql, mysql, sqlite3, mongosh, redis-cli, and dropdb; plus the base policy's cloud rows (kubectl delete, terraform destroy, aws s3 rm --recursive, helm uninstall, gcloud delete, docker volume rm). Asks where rtk's table says ask: rm -rf on a relative path off the safe list; git reset --hard, clean -f, checkout ., branch -D; docker prune and docker rm -f over a substitution. File checks are skipped inside docker/kubectl exec; rtk is a transparent prefix. Friction, not a security boundary."
+description: "Deprecated: use block-destructive-commands, which shares this policy's destructive-command table. rtk#1007. Same table as block-destructive-commands: blocks root/home/.git deletes, force/delete/mirror pushes, reset --hard, clean -f, switch --discard, IaC destroy, cloud deletes, DB drops, lockouts; asks rm -rf off rtk's safe list, one named kubectl delete, bare lease, stash drop, prunes; dry-run flags pass. Own rows block credential-file reads (.env, keys, ~/.ssh) and echo or inline *_API_KEY/_SECRET/_TOKEN. Skips file rows in container exec."
 metadata:
   chock.artifact: rule
   chock.enforcement: advise
   chock.hooks: hooks/hooks.json
 ---
 
-# rtk Dangerous Actions Blocker
+# Block Dangerous Commands (Deprecated)
 
-Carved out for rtk-ai/rtk#1007: rtk's own decision table as a chock policy (rtk's own hooks may not block). Refuses rm -rf on root, home, parent or absolute paths; git push --force and '+' refspecs (not --force-with-lease); reads of credential files (.env, *.pem, *.key, id_rsa, ~/.ssh, ~/.aws) by cat, grep, rg, awk, sed, jq and the like or by `< file`, and echoes or inline literals of *_API_KEY/*_SECRET/*_TOKEN; DROP/TRUNCATE/unscoped DELETE through psql, mysql, sqlite3, mongosh, redis-cli, and dropdb; plus the base policy's cloud rows (kubectl delete, terraform destroy, aws s3 rm --recursive, helm uninstall, gcloud delete, docker volume rm). Asks where rtk's table says ask: rm -rf on a relative path off the safe list; git reset --hard, clean -f, checkout ., branch -D; docker prune and docker rm -f over a substitution. File checks are skipped inside docker/kubectl exec; rtk is a transparent prefix. Friction, not a security boundary.
+Deprecated: use block-destructive-commands, which shares this policy's destructive-command table. rtk#1007. Same table as block-destructive-commands: blocks root/home/.git deletes, force/delete/mirror pushes, reset --hard, clean -f, switch --discard, IaC destroy, cloud deletes, DB drops, lockouts; asks rm -rf off rtk's safe list, one named kubectl delete, bare lease, stash drop, prunes; dry-run flags pass. Own rows block credential-file reads (.env, keys, ~/.ssh) and echo or inline *_API_KEY/_SECRET/_TOKEN. Skips file rows in container exec.
 
 ```
-block: rm_-rf(/|~|..|abs), git_push(--force|+ref), read(.env|*.pem|*.key|id_rsa|~/.ssh|~/.aws), echo|inline($*_API_KEY|$*_SECRET|$*_TOKEN), sql(DROP|TRUNCATE|DELETE_no_WHERE)|dropdb|FLUSHALL, kubectl_delete|terraform_destroy|aws_s3_rm_-r|helm_uninstall|gcloud_delete|docker_volume_rm
-ask: rm_-rf(relative, off safe_list), git(reset_--hard|clean_-f|checkout_.|branch_-D), docker_*_prune|docker_rm_-f_$(..); skip_inside: docker|kubectl_exec; prefix: rtk; prefer: force-with-lease|stash|dry-run
+block: shared table (= block-destructive-commands: rm_-rf(/|~|.|abs|.git),push(-f|+ref|:ref|--mirror),reset_--hard|clean_-f|checkout_.|switch_--discard,destroy|cloud_delete,sql_drop|dropdb),read(.env|*.pem|*.key|id_rsa|~/.ssh|~/.aws),echo|inline($*_API_KEY|$*_SECRET|$*_TOKEN)
+ask: rm_-rf(off safe_list),kubectl_delete(one_named),lease_bare,stash_drop,branch_-D,docker_prune,-auto-approve,pkill_-f,systemctl_disable;allow: dry_run(tool_flag);skip_inside: container_exec(file rows);prefix: rtk
 ```
 
 This policy is enforced in this client by a PreToolUse hook installed with the plugin, subject to the fail conditions stated in the plugin description. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

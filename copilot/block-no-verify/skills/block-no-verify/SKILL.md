@@ -1,19 +1,19 @@
 ---
 name: block-no-verify
-description: "Best-effort guard against bypassing git hooks via git commit/push --no-verify, commit's short -n form, or any way of pointing core.hooksPath elsewhere: -c, --config-env, `git config core.hooksPath <path>` and the GIT_CONFIG_* environment. Read as a parsed command, so `cd repo && git commit --no-verify`, `bash -c '...'` and sudo/env/xargs wrappers are caught and a message that merely says --no-verify is not. On git push, -n means --dry-run and stays allowed. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Also refuses an agent command that sets a person-only override (CHOCK_ALLOW*, CHOCK_AGENT_COMMIT, CHOCK_DIFF_LIMIT) by env prefix, env, export, declare, set/setx or $env:, and refuses hiding the agent markers (CLAUDECODE, AI_AGENT, CHOCK_AGENT_COMMIT) by unset, env -u/-i, export -n or Remove-Item Env:; it tells the agent to ask the person. Fix the underlying hook failure instead of skipping validation."
+description: "Friction, not a security boundary: refuses agent commands that skip git hooks. --no-verify on commit/push/merge/am/rebase/pull/cherry-pick/revert, -n on commit/am; core.hooksPath set by -c, git config or GIT_CONFIG_*; HUSKY=0, SKIP=, LEFTHOOK=0 and kin; hook manager uninstall; aliases and rebase --exec defined in the command. Asks on plumbing, unset hooksPath, another GIT_DIR and config files. Refuses person-only CHOCK_*/marker changes. Mandatory. Misses: older aliases, scripts, $VARs."
 metadata:
   chock.artifact: rule
   chock.enforcement: advise
   chock.hooks: com.github.copilot/hooks/hooks.json
 ---
 
-# Block No-Verify
+# Block Skipping Git Hooks
 
-Best-effort guard against bypassing git hooks via git commit/push --no-verify, commit's short -n form, or any way of pointing core.hooksPath elsewhere: -c, --config-env, `git config core.hooksPath <path>` and the GIT_CONFIG_* environment. Read as a parsed command, so `cd repo && git commit --no-verify`, `bash -c '...'` and sudo/env/xargs wrappers are caught and a message that merely says --no-verify is not. On git push, -n means --dry-run and stays allowed. Known bypass classes include aliases, wrapper scripts, and non-standard clients. Also refuses an agent command that sets a person-only override (CHOCK_ALLOW*, CHOCK_AGENT_COMMIT, CHOCK_DIFF_LIMIT) by env prefix, env, export, declare, set/setx or $env:, and refuses hiding the agent markers (CLAUDECODE, AI_AGENT, CHOCK_AGENT_COMMIT) by unset, env -u/-i, export -n or Remove-Item Env:; it tells the agent to ask the person. Fix the underlying hook failure instead of skipping validation.
+Friction, not a security boundary: refuses agent commands that skip git hooks. --no-verify on commit/push/merge/am/rebase/pull/cherry-pick/revert, -n on commit/am; core.hooksPath set by -c, git config or GIT_CONFIG_*; HUSKY=0, SKIP=, LEFTHOOK=0 and kin; hook manager uninstall; aliases and rebase --exec defined in the command. Asks on plumbing, unset hooksPath, another GIT_DIR and config files. Refuses person-only CHOCK_*/marker changes. Mandatory. Misses: older aliases, scripts, $VARs.
 
 ```
-never(commit): --no-verify|-n; never(push): --no-verify; never(set): core.hooksPath
-if(hook_fails): fix_issue; never(skip_hook)
+never(commit|push|merge|am|rebase|pull|cherry-pick|revert): --no-verify|-n(commit|am); never(set): core.hooksPath|HUSKY=0|SKIP=|LEFTHOOK=0|kin; never: pre-commit|lefthook|husky uninstall; ask: commit-tree|update-ref|GIT_DIR|config files
+never(agent_set|unset): CHOCK_ALLOW*|CHOCK_AGENT_COMMIT|CHOCK_DIFF_LIMIT|CLAUDECODE|AI_AGENT; if(hook_fails|override_needed): fix_issue|ask_person
 ```
 
-This package ships a PreToolUse hook under com.github.copilot/. It enforces only in a client that both reads that namespace AND tells the hook where the package lives; a client that exports no plugin-root variable runs the hook, which then allows -- so treat this package as advisory unless a deny has been witnessed in your own client. A client that ignores the namespace gets this text only. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock
+This package ships a PreToolUse hook under com.github.copilot/. It enforces only in a client that both reads that namespace AND tells the hook where the package lives. A client that exports no plugin-root variable (VS Code's agent-plugin format exports none) runs the hook, which then exits 0 and checks nothing; a root that is set but lacks the bundled hook exits 2 and refuses the call. A client that ignores the namespace gets this text only. Repo-wide enforcement across every commit and in CI still needs `chock sync`. See https://github.com/open-coder-ai/chock

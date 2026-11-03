@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "This change adds text to an agent instruction file that an attacker would add: it overrides standing rules, hides work from a person, approves tools or skips hooks and review without one, downloads and runs code, follows remote instructions, recasts the agent's role, poses as a system message, removes a guardrail statement, sends a secret somewhere, or hides a command in an encoded blob. Write rules as prohibitions a person can review, and put setup steps in a reviewed script. A person keeps a reviewed line by committing from their own shell: CHOCK_ALLOW=scan-instruction-files for that one commit answers an ask, and 'chock: allow instruction-scan' on the line waives a refusal; an agent asks the person and never sets either.",
+  "params": {
+    "script": "implementations/scan-instruction-files-gate.py"
+  },
+  "script_base": "gate"
+}

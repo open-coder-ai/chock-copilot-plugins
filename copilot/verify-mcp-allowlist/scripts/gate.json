@@ -1,0 +1,13 @@
+{
+  "kind": "script",
+  "on": [
+    "commit",
+    "tool_use"
+  ],
+  "action": "block",
+  "message": "An MCP server is not on the allowlist, differs from its allowlisted entry, or its config cannot be parsed. Only servers listed in .chock/mcp-allowlist.json (name with launcher and exact arguments, or url host) may be configured. Pin it to an exact version or image digest, run no shell command line, use https and carry credentials only as references (these rules warn for now). Ask a person to review the server and edit the allowlist from their own shell; do not edit the allowlist yourself.",
+  "params": {
+    "script": "implementations/verify-mcp-allowlist_gate.py"
+  },
+  "script_base": "gate"
+}
