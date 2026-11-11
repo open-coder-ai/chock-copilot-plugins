@@ -1,0 +1,32 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--gate",
+        "scripts/gate.json",
+        "--stop"
+      ],
+      "files": {
+        "scripts/gate.json": "30ad3438b2a81b9ad11f1dfeaf3993b7127c7405466c48e4046eb636c289e0ab",
+        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e",
+        "scripts/implementations/agent-permissions-scan.py": "602c878817e3820a1120832e13a058ee3d16d2fa3077a3b7d95d62ab01d2410d",
+        "scripts/implementations/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/implementations/chock_scan/jsonc.py": "1a98984924db447d354ebf35225bcc9fd882ba047f9c0c733f8d924acbc4ead9",
+        "scripts/implementations/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/implementations/chock_scan/yamlpath.py": "0655dd360885d27adb99f08f372a9f00a9c5dcae715e30869338c8bc06b2b675",
+        "scripts/implementations/chock_scan/yamlpath_block.py": "d460f7b82fb9bf38381951c14b37729397a5715773eab794dcdacfb67df683e9",
+        "scripts/implementations/chock_scan/yamlpath_blockscalar.py": "b566961a1871c4f4bfc42e45aaba608ae463a78cade583a9ee6877fdf74acf26",
+        "scripts/implementations/chock_scan/yamlpath_cursor.py": "87218fc40e3e35460b233a8ae3ab6a6e7a1c6ef433229e2e3c7f4dc5c9737a5c",
+        "scripts/implementations/chock_scan/yamlpath_flow.py": "b4fe4b51b62270fab6d81cac78e2fd9ed7de7096df4cf72b751f44f4411f97ae",
+        "scripts/implementations/chock_scan/yamlpath_scalar.py": "eb688c83caa188fa6cb5a92393ffbfe56ea89ea1691d1115107a5bcf3f0647ff",
+        "scripts/implementations/perms/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "scripts/implementations/perms/base.py": "9e47770a52f0c6e894538c9873bdfd959e5f1825434b876508e3be0604431de9",
+        "scripts/implementations/perms/load.py": "46571a9257b74db64c96408a20d8ae2ad42e49407bef92f64275b6c9315e9b89",
+        "scripts/implementations/perms/rules.py": "0372246181c09954a047314863ea56e5c12f024429d4c464a003146851fe766e",
+        "scripts/implementations/perms/sidecar.py": "bb910f215ef4fb1b5a21f180715519c46456e3652fb594a4aab6fe6199e30ecd",
+        "scripts/implementations/perms/walk.py": "677802ea60469f2c5392efc493598195dbfd1d88ff6bc390079d4aa075e5f662"
+      },
+      "timeout": 30
+    }
+  ]
+}

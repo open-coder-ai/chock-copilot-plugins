@@ -1,0 +1,23 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--guard",
+        "scripts/ask-credential-switching.py"
+      ],
+      "files": {
+        "scripts/ask-credential-switching.py": "fcd548d538a5636f2189ebbcf9641fa12f1b3520a870e17a2125fbd3fb0b87ff",
+        "scripts/chock_shellparse/__init__.py": "6b82117d05d291181f686c89e20b52dfa98db376b3c66e135156b304fa8c1967",
+        "scripts/chock_shellparse/args.py": "269500b30cac358c5b98594a87f325200184111d9c9f82a7ab2df62d343d8a74",
+        "scripts/chock_shellparse/parse.py": "cd6afc73613f3a40e2b4f19804b965f918eb590078c60bc59d4f59a50b49a830",
+        "scripts/chock_shellparse/quoting.py": "ee091d5620c8746ade5052049d92897e2fd859fa2d4c0e6043188b812a23e65c",
+        "scripts/chock_shellparse/targets.py": "dd7a94d66bf2daa9bbdbdf863ac440e5b28a43470c2ad0c61bb4f32c70bc86a1",
+        "scripts/chock_shellparse/wrappers.py": "545ccbbe00e42a953f8f51d0e8f47284da4c5a9e6393418f25850e3dc618e3c8",
+        "scripts/chock_shellparse/writes.py": "0dab41ca9a6f4c22ce8d046905afb9763eac39d6de6fe34b863a6d35b6fcdb83",
+        "scripts/credential_allowlist.py": "ed36850c4e382aeb5bbd8e762be536783e8992c207f68e9d468ad776e99c5b9e",
+        "scripts/credential_shapes.py": "b1429c9a853b077a9107b52844b14e25b5617701b6b2c5d8b5b665daf76d874a"
+      },
+      "timeout": 30
+    }
+  ]
+}

@@ -9,10 +9,11 @@
     "asi03",
     "asi10"
   ],
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": {
     "name": "chock-core"
   },
+  "homepage": "https://chock.sh",
   "license": "Apache-2.0",
   "repository": "https://github.com/open-coder-ai/chock-catalog"
 }

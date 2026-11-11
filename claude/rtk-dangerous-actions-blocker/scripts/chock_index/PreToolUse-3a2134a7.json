@@ -1,0 +1,27 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--guard",
+        "scripts/rtk-dangerous-actions-blocker.py"
+      ],
+      "files": {
+        "scripts/chock_destructive/__init__.py": "49f3ef5dce2552ba307f5f23ea8a42ed41593830b898d6a89b1967b08b70fd42",
+        "scripts/chock_destructive/api.py": "c6943c9ae3b5a424d7c0eab21af3f222401bed42a2be049849754eee179c368a",
+        "scripts/chock_destructive/files.py": "cd7af1a773f381e6d4c4bef1e938bc7ebbbb844690ddaeb082b7991feda520b6",
+        "scripts/chock_destructive/infra.py": "9798dd9cdea5b1f16986f8c753a435d2d88ddc67581bb880f759f1f88cc64442",
+        "scripts/chock_destructive/table.py": "b557c2429f0e536ff8c11df1694791102d298c1ea2610df1029f8b1ba43314da",
+        "scripts/chock_destructive/vcs.py": "8c648b13751b1386290b1c3cc43aa009b03b00655931feeae32016c818f54bec",
+        "scripts/chock_shellparse/__init__.py": "6b82117d05d291181f686c89e20b52dfa98db376b3c66e135156b304fa8c1967",
+        "scripts/chock_shellparse/args.py": "269500b30cac358c5b98594a87f325200184111d9c9f82a7ab2df62d343d8a74",
+        "scripts/chock_shellparse/parse.py": "cd6afc73613f3a40e2b4f19804b965f918eb590078c60bc59d4f59a50b49a830",
+        "scripts/chock_shellparse/quoting.py": "ee091d5620c8746ade5052049d92897e2fd859fa2d4c0e6043188b812a23e65c",
+        "scripts/chock_shellparse/targets.py": "dd7a94d66bf2daa9bbdbdf863ac440e5b28a43470c2ad0c61bb4f32c70bc86a1",
+        "scripts/chock_shellparse/wrappers.py": "545ccbbe00e42a953f8f51d0e8f47284da4c5a9e6393418f25850e3dc618e3c8",
+        "scripts/chock_shellparse/writes.py": "0dab41ca9a6f4c22ce8d046905afb9763eac39d6de6fe34b863a6d35b6fcdb83",
+        "scripts/rtk-dangerous-actions-blocker.py": "55984436c92a1a2542103e35faddc65d88b980593cc699bf92c19de149caf8bd"
+      },
+      "timeout": 30
+    }
+  ]
+}

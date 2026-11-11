@@ -1,11 +1,12 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hardening-flags",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Blocks added settings that weaken compiler, linker, Rust or kernel hardening, in CMake, Make, meson, configure.ac, Cargo, build.rs, Go release scripts, Dockerfiles and kernel config: no stack protector, FORTIFY_SOURCE off, non-PIE, execstack, norelro, CET off, kernel KASLR/RWX off. Asks on Rust release overflow-checks off, /dev/mem. Not MSVC, sysctl or container settings; misses environment flags, generated files. Runs: commit, agent write, turn's end, CI. Waiver: 'pragma: allowlist hardening-flag'. [Session-enforced at the turn's end by a Stop hook; needs git and a Python 3.11+. This client records no file-writing tool vocabulary, so the write itself is not judged: what the turn actually left on disk is re-read, and a construct a rule denies is refused then, however it was written. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo. Enforces only in a client that reads the com.github.copilot namespace and tells the hook where the package lives; a client that exports no plugin-root variable (VS Code's agent-plugin format exports none) runs the hook, which then exits 0 and checks nothing; a root that is set but lacks the bundled hook exits 2 and refuses the call.]",
   "author": {
     "name": "chock-core"
   },
+  "homepage": "https://chock.sh",
   "repository": "https://github.com/open-coder-ai/chock-catalog",
   "license": "Apache-2.0",
   "keywords": [

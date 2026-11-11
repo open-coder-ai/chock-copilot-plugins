@@ -16,7 +16,7 @@
       "name": "agent-discipline",
       "source": "./claude/agent-discipline",
       "description": "trigger: edits without reading, unverified completion claims, weakened tests, dead code. avoid: skipping verification, deleting assertions, leaving unused code. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "name": "agent-permissions-scan",
@@ -40,7 +40,7 @@
       "name": "block-destructive-commands",
       "source": "./claude/block-destructive-commands",
       "description": "Best-effort, on parsed commands (echo ignored); one verdict table shared with rtk-dangerous-actions-blocker. Blocks recursive deletes of root, home, abs paths or .git; mv/chmod/chown -R of system dirs; dd to devices, mkfs; lockouts; force, delete, mirror pushes; history rewrites; switch --discard; IaC destroy; cloud deletes; DB drops. Asks: rm -rf off a safe list, one named kubectl delete, bare lease, stash drop, -auto-approve, drain, prunes, API deletes. Dry runs pass. Pre-push: no non-ff. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
-      "version": "0.3.1"
+      "version": "0.3.2"
     },
     {
       "name": "block-fetch-exec-in-files",
@@ -58,19 +58,19 @@
       "name": "block-invisible-unicode",
       "source": "./claude/block-invisible-unicode",
       "description": "Blocks hidden Unicode in added lines: bidi, tag and plane-14 chars, word joiner, chained invisibles, zero-width/joiners/fillers by ASCII, mid-line BOM, LRM/RLM outside RTL text, selectors after ASCII, private-use runs of 16+. Allows emoji, RTL/Indic/Thai/CJK text, line-start BOM. Not caught: homoglyphs, a joiner between non-ASCII, binary files and text after U+2028 at commit. Runs: commit, agent write, turn's end. Waiver: 'pragma: allowlist invisible-unicode' same line; agent: HEAD only. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.1.1"
+      "version": "0.1.2"
     },
     {
       "name": "block-no-verify",
       "source": "./claude/block-no-verify",
       "description": "Friction, not a security boundary: refuses agent commands that skip git hooks. --no-verify on commit/push/merge/am/rebase/pull/cherry-pick/revert, -n on commit/am; core.hooksPath set by -c, git config or GIT_CONFIG_*; HUSKY=0, SKIP=, LEFTHOOK=0 and kin; hook manager uninstall; aliases and rebase --exec defined in the command. Asks on plumbing, unset hooksPath, another GIT_DIR and config files. Refuses person-only CHOCK_*/marker changes. Mandatory. Misses: older aliases, scripts, $VARs. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
-      "version": "0.5.4"
+      "version": "0.5.5"
     },
     {
       "name": "block-persistence-shapes",
       "source": "./claude/block-persistence-shapes",
       "description": "Best-effort guard against shell commands that publish or keep access after the session: npm/pnpm/yarn/twine/ poetry/uv/cargo/gem publish, docker/podman push and login, npm token and registry edits, repos made public; user services, launch agents, cron/at/schtasks, Run keys, authorized_keys, runner registration, sudoers, setuid bits, detached downloads. Asks on gh release create, git remote add, git push to a URL. Misses: scripts, aliases, system units, shell rc files, ssh-run commands. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
-      "version": "0.0.6"
+      "version": "0.0.7"
     },
     {
       "name": "block-secret-store-reads",
@@ -94,19 +94,19 @@
       "name": "block-unguarded-agent-spawn",
       "source": "./claude/block-unguarded-agent-spawn",
       "description": "Best effort. Refuses agents with safety off: claude --dangerously-skip-permissions, bypassPermissions, wildcard --allowedTools; codex --full-auto, --yolo, -a never, danger-full-access; gemini --yolo; cursor-agent --force; aider --yes-always; copilot --allow-all-tools; amp, cline, goose, opencode auto-approve; DeepSeek Harness 127.0.0.1:3080/api calls lifting sandbox/approvals (CVE-2026-82533). Sees through bash -c, sudo, npx. Misses: config, aliases, scripts, ssh, other dsh ports, file bodies. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
-      "version": "0.2.3"
+      "version": "0.2.4"
     },
     {
       "name": "block-wildcard-agent-permissions",
       "source": "./claude/block-wildcard-agent-permissions",
       "description": "Blocks agent grants that allow everything: a bare Bash wildcard, a `*` in an allow/alwaysAllow/tools array on the same line, or quoted defaultMode bypassPermissions. Any file is judged. Not caught here: a multi-line array or YAML `- \"*\"` list, an unquoted defaultMode (agent-permissions-scan warns). Runs: commit, agent write, turn's end. Waiver: 'pragma: allowlist broad-agency' same line. Person's commit: honoured. Agent: only if already in HEAD; MCP gateway: never. Agent asks a person. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.0.10"
+      "version": "0.0.11"
     },
     {
       "name": "chock-mise",
       "source": "./claude/chock-mise",
       "description": "trigger: personalize the coding agent to its owner -- adopt the owner's dialect, taste, habits and demeanor so it works like a trained twin of that developer. apply: the owner's chock-mise profile where present; defer to committed project standards where it is silent or conflicts. avoid: inferring personal identity or employer-confidential data, and overriding the project's own committed rules. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "name": "ci-github-actions-security",
@@ -118,7 +118,7 @@
       "name": "code-safety",
       "source": "./claude/code-safety",
       "description": "trigger: secrets, eval/exec, unsanitized SQL, hallucinated dependencies. avoid: committing credentials, adding unverified packages, executing dynamic code. Install scan-secrets (commit, agent write) for secrets and verify-dependency-exists (opt-in; needs an allowlist) for dependencies. Advisory: eval/exec and SQL guidance; a gate decides only the non-literal slice (agentic-code-security code pack: Python eval/exec, SQL built from strings in Python and JS). [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "name": "compromised-package-ioc",
@@ -130,7 +130,7 @@
       "name": "context-hygiene",
       "source": "./claude/context-hygiene",
       "description": "trigger: context bloat, stale observations, resolved content inlined, noisy exploration. avoid: context rot and lost-in-the-middle failures. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.3"
+      "version": "0.0.4"
     },
     {
       "name": "dockerfile-compose-security",
@@ -148,25 +148,25 @@
       "name": "git-safety",
       "source": "./claude/git-safety",
       "description": "trigger: force push, hard reset, destructive branch delete, hook bypass, direct main commits. avoid: rewriting remote history, discarding uncommitted work, skipping pre-commit checks. Enforced counterparts: block-destructive-commands (command guard plus pre-push hook), block-no-verify (command guard), protect-main-branch (commit and push gate), limit-diff-size (asks at commit). This rule is the advisory layer over them plus atomic-commit guidance no gate can decide. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "name": "guard-deletion",
       "source": "./claude/guard-deletion",
       "description": "trigger: a change that removes a check, auth decorator, middleware registration, sanitizer call or path check with none of its kind in the same hunk (ask), or removes a hardening flag, security header, cookie attribute, TLS check or row-level security, or swaps one of those or a narrow file mode for a weakened form (block). Hunk-local: misses a guard moved across hunks or files, one neutralised in place, added insecure settings, a deletion-only commit. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.0.3"
+      "version": "0.0.4"
     },
     {
       "name": "guard-memory-writes",
       "source": "./claude/guard-memory-writes",
       "description": "Refuses agent-memory writes holding pasted git history, a code block over 20 lines, a duplicate line or a secret. Warns (observe, ASI06) on an added line that tells the agent to run a command or fetch a URL, an encoded blob, and, only where the repo keeps .chock/egress-allowlist.txt, a URL host off it. Judges memory files only (MEMORY.md, CLAUDE.local.md, .claude/memory/**, memory/**/*.md, the agent's own stores) and what a change adds. No waiver. A write after an untrusted fetch is not seen. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.0.10"
+      "version": "0.0.11"
     },
     {
       "name": "hardening-flags",
       "source": "./claude/hardening-flags",
       "description": "Blocks added settings that weaken compiler, linker, Rust or kernel hardening, in CMake, Make, meson, configure.ac, Cargo, build.rs, Go release scripts, Dockerfiles and kernel config: no stack protector, FORTIFY_SOURCE off, non-PIE, execstack, norelro, CET off, kernel KASLR/RWX off. Asks on Rust release overflow-checks off, /dev/mem. Not MSVC, sysctl or container settings; misses environment flags, generated files. Runs: commit, agent write, turn's end, CI. Waiver: 'pragma: allowlist hardening-flag'. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.1.2"
+      "version": "0.1.3"
     },
     {
       "name": "injection-defense",
@@ -184,7 +184,7 @@
       "name": "limit-diff-size",
       "source": "./claude/limit-diff-size",
       "description": "trigger: staging a large change, committing more than a reviewer can read at once. avoid: one commit carrying hundreds of hand-written lines; lockfile and generated churn is not counted. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "name": "lockfile-integrity",
@@ -196,13 +196,13 @@
       "name": "memory-discipline",
       "source": "./claude/memory-discipline",
       "description": "trigger: repeated mistakes, rediscovered patterns, preferences, non-derivable facts. avoid: persisting file contents, git history, or task intermediates as memory. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.6"
+      "version": "0.0.7"
     },
     {
       "name": "no-a11y-regression",
       "source": "./claude/no-a11y-regression",
       "description": "trigger: remediating accessibility, editing markup, emptying or removing an alt, aria-label, label or lang that an element already had, deleting a flagged element. avoid: breaking a requirement the previous revision met; interrupting a correct fix. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "1.1.3"
+      "version": "1.1.4"
     },
     {
       "name": "opaque-blob-guard",
@@ -220,13 +220,13 @@
       "name": "pin-github-actions",
       "source": "./claude/pin-github-actions",
       "description": "Blocks uses: of an action/reusable workflow at a movable ref (not a lowercase 40-hex SHA) and a docker:// image without @sha256, quoted, JSON or flow; an alias, escape or value off the uses line is refused. Local ./ passes. Scope: .github/workflows/, .github/actions/, action.y*ml. Line regex, no YAML parse: container image tags, impostor SHAs, a tag named as 40 hex pass. Waiver: 'pragma: allowlist unpinned-action' same line. Person's commit: honoured. Agent: only if in HEAD; MCP gateway: never. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.0.7"
+      "version": "0.0.8"
     },
     {
       "name": "protect-agent-config",
       "source": "./claude/protect-agent-config",
       "description": "Stops an agent editing its guardrails (MITRE ATLAS AML.T0081). Shell guard refuses writes to AGENTS.md, whole agent folders (.claude/, .cursor/, .codex/, .gemini/, .agents/, .chock/, ...), MCP/hook client configs (.mcp.json, ...), guardrails toggles, plugin install markers, chock.lock, hook files of Cline, Kiro, Augment, Windsurf and Devin (user and machine level), ~/.claude.json, Claude Code plugin roots, project config of Kilo Code, opencode, Factory, Amp, Continue and Goose, .git/{hooks,config}, policy implementations/: redirect, rm/mv/tee/sed -i, cp into, git checkout/restore, a write through a symlink; CLAUDE_CODE_PLUGIN_DIRS, claude --plugin-dir, chock resume (best effort). Any case. An instruction file under docs/ asks a person. Coarse: also eval or sh -c of computed text, shells fed by pipe/variable, interpreter one-liners naming such a path. Reads, `chock sync` pass. Edit/Write: tool gate, same set and verdicts. Misses: user config under ~/.config/, writes a script makes, an existing hard link. [Shell guard: Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently. Write gate: Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.7.6"
+      "version": "0.7.8"
     },
     {
       "name": "protect-ci-workflows",
@@ -238,13 +238,13 @@
       "name": "protect-commit-privacy",
       "source": "./claude/protect-commit-privacy",
       "description": "Keeps the development conversation out of git history. Guard refuses `git commit` and `gh pr create|edit` whose message or body (inline -m/-b, -F/--file/--body-file, heredoc on -F -) holds a process-leak marker (session link, 'user asked', ...); commands behind cd, sh -c, sudo, env are read. A commit-msg hook applies the same markers to the recorded message. Narrow deny-list. No waiver: a legitimate phrase needs a person to remove it from MARKERS in the guard; an agent asks the person. [Session-enforced via a PreToolUse hook; needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs; the Windows Store stub is skipped). With no working Python the hook refuses (exit 2); without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently.]",
-      "version": "0.2.6"
+      "version": "0.2.7"
     },
     {
       "name": "protect-main-branch",
       "source": "./claude/protect-main-branch",
       "description": "Keeps agents off main and master: a git hook reads the current branch at commit time and parses the refs being pushed at push time. The hook refuses a violation only where it is installed. As skill text alone this is advice, and nothing stops one. [Advisory skill only; enforcement needs chock installed in the repo.]",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "name": "protect-test-integrity",
@@ -298,7 +298,7 @@
       "name": "scan-secrets",
       "source": "./claude/scan-secrets",
       "description": "Blocks credentials: vendor tokens (AWS, GitHub, GitLab, Slack, OpenAI, HF, ...), JWTs, private-key and PGP blocks, named key/token/secret/password values (JSON, YAML, env, HCL, code), URI creds, Authorization literals, CLI password flags; files by path (.env*, keys). Misses: split or encoded values, quoted values with spaces, unlisted names, reference- or placeholder-like values. Runs: commit, agent write, turn end. Pragma same line; agent: only if in HEAD; MCP gateway: never. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.1.3"
+      "version": "0.1.4"
     },
     {
       "name": "scan-secrets-entropy",
@@ -322,7 +322,7 @@
       "name": "verify-dependency-exists",
       "source": "./claude/verify-dependency-exists",
       "description": "Allowlist gate for new dependencies; no registry lookup. Reads Python, Node, Rust, Ruby, PHP, JVM, .NET, Go, Elixir, Dart and Swift manifests (read, never run); blocks an added name missing from .chock/dependency-allowlist.txt, asks on a lockfile-only one. Not read: computed lists, sources, versions, some forms (see docs). No allowlist file (plugin-only installs): a manifest change warns, never blocks. Repo form is opt-in: seed, observe, `chock enable`. Runs: commit, agent write, turn's end. [Session-enforced via PreToolUse and Stop hooks; needs git and a Python 3.11+. PreToolUse judges the file a tool call would write; Stop re-reads what the turn actually left on disk, so a file written through a shell heredoc is judged too. With no working Python the hook exits 2; without git, fail-open clients allow silently. A gate that cannot reach a decision refuses rather than allowing one it never judged. Enforcement at every commit and in CI still needs chock installed in the repo.]",
-      "version": "0.2.2"
+      "version": "0.2.3"
     },
     {
       "name": "verify-mcp-allowlist",

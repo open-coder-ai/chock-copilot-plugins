@@ -1,11 +1,12 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "block-no-verify",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Friction, not a security boundary: refuses agent commands that skip git hooks. --no-verify on commit/push/merge/am/rebase/pull/cherry-pick/revert, -n on commit/am; core.hooksPath set by -c, git config or GIT_CONFIG_*; HUSKY=0, SKIP=, LEFTHOOK=0 and kin; hook manager uninstall; aliases and rebase --exec defined in the command. Asks on plumbing, unset hooksPath, another GIT_DIR and config files. Refuses person-only CHOCK_*/marker changes. Mandatory. Misses: older aliases, scripts, $VARs. [Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs). With no working Python it exits 2; without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently -- VS Code agent mode honours that ask and it overrides the client's own auto-approve.]",
   "author": {
     "name": "chock-core"
   },
+  "homepage": "https://chock.sh",
   "repository": "https://github.com/open-coder-ai/chock-catalog",
   "license": "Apache-2.0",
   "keywords": [

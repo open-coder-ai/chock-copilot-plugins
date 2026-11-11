@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] || exit 0; [ -f \"$r/scripts/vscode_copilot.py\" ] || { echo 'chock: the plugin root is set but the bundled hook is missing, so this call cannot be checked. Refusing rather than allowing it unchecked.' >&2; exit 2; }; exec git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --guard \"$r/scripts/protect-ci-workflows.py\"",
+            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] || exit 0; [ -f \"$r/scripts/vscode_copilot.py\" ] || { echo 'chock: the plugin root is set but the bundled hook is missing, so this call cannot be checked. Refusing rather than allowing it unchecked.' >&2; exit 2; }; exec git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --multi \"$r/scripts/chock_index/PreToolUse-9ae76f0d.json\" --index-sha256 b52ba4e90163c51197a3fe6dc335590634daddb79cb7cf59135adafdba32d5e0 --root \"$r\"",
             "timeout": 45
           }
         ]
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] || exit 0; [ -f \"$r/scripts/vscode_copilot.py\" ] || { echo 'chock: the plugin root is set but the bundled hook is missing, so this call cannot be checked. Refusing rather than allowing it unchecked.' >&2; exit 2; }; exec git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --gate \"$r/scripts/gate.json\" --stop",
+            "command": "r=\"${PLUGIN_ROOT:-}\"; [ -n \"$r\" ] || exit 0; [ -f \"$r/scripts/vscode_copilot.py\" ] || { echo 'chock: the plugin root is set but the bundled hook is missing, so this call cannot be checked. Refusing rather than allowing it unchecked.' >&2; exit 2; }; exec git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"$r/scripts/launch.sh\" \"$r/scripts/vscode_copilot.py\" --multi \"$r/scripts/chock_index/Stop-185f9750.json\" --index-sha256 2183996ec8a59fee63105dc4c79e2e9d890c2bf0fa074e6a8c1914fb3d4e7dd7 --root \"$r\"",
             "timeout": 45
           }
         ]

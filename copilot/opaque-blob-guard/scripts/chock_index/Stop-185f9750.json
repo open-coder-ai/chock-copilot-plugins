@@ -1,0 +1,31 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--gate",
+        "scripts/gate.json",
+        "--stop"
+      ],
+      "files": {
+        "scripts/gate.json": "1afd3923bab6f689a27582f09b004512a36da8dbeae7f3de2b453ebce9e6642e",
+        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e",
+        "scripts/implementations/blobguard/allow.py": "0aec1b725ecbc78fd78278a50f45d1a3c0793a2a9b2123ed335b0f0cdb991d10",
+        "scripts/implementations/blobguard/detect.py": "f2a273eeeb768573e3501620e7bca091744ff7d41a242bd5f7e5de3643008e39",
+        "scripts/implementations/blobguard/gradle.py": "41b71702e2cceae6c432db190cd80dea264fbf7c4790e94f228f8b76aa3df842",
+        "scripts/implementations/blobguard/judge.py": "97d6cec087406812ffd0021d899ef1828ca6807b26cf3609a8fe40ed57523544",
+        "scripts/implementations/blobguard/source.py": "d9fb840b510f54f9959da3d9136a7a4f1e53cb98f7a6afb2e0ff300b39a4b91b",
+        "scripts/implementations/blobguard/tables.py": "3626aa723f25009a4ef09eb27c220ab5323252653434e070815a4945a7a5999e",
+        "scripts/implementations/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/implementations/chock_scan/data_table.py": "a19b2df7efdd30e7bcc7ad96c6f82d43b972fd96172a819a04f218cdf9129b1e",
+        "scripts/implementations/chock_scan/entropy.py": "d43e7263f846aa40ded8e6974afd07257cc375d9eb73b1c621c1039fdfe08822",
+        "scripts/implementations/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/implementations/data/gradle.json": "e6cdeaaee349a4a3fe95f2ee3feab0c244b8bc08ff48d6f5d279d31bc120e24a",
+        "scripts/implementations/data/magic.json": "01fd829c404fff83ff3ca6b62ba3456865c3c8f5743bb650c7c8402fef1daade",
+        "scripts/implementations/data/scope.json": "7cf7c0d5876c41f754369a6dec07503c202bda0bec29c6d3e7009a4936502f26",
+        "scripts/implementations/data/textrules.json": "28e818d77bdbf8957faf21882c8776816212cb8c7493afedf62f5e76c16e6433",
+        "scripts/implementations/opaque-blob-guard-gate.py": "74d14bbb4b362ee39f358b5ea73d984da1c35d9178e7e235e05e1ca880e9ccdd"
+      },
+      "timeout": 30
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--gate",
+        "scripts/gate.json",
+        "--stop"
+      ],
+      "files": {
+        "scripts/gate.json": "9e8f5209f1afd4603e121541f787b5b839eba3b8cde3f40de3e264d034151b99",
+        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e"
+      },
+      "timeout": 30
+    }
+  ]
+}

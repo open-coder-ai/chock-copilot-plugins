@@ -9,6 +9,7 @@ from chock_shellparse.args import taken
 from chock_shellparse.parse import _ASSIGN, _base, _Clause, _crude, _Scan, script_at
 from chock_shellparse.wrappers import WRAPPERS as _WRAPPERS
 from pathescape import decode
+from pathpy import inline, judged
 from pathtext import scan
 from pathwrap import WRAPPERS
 
@@ -119,22 +120,28 @@ class _Look:
         self.fed: list[str] = []  # each interpreter fed a literal here-document: its words, redirections and script
         self.rest: list[str] = []  # each other clause that is not a plain read
         self.judged = False  # the clause being read is an interpreter in `fed`
+        self.alone = False  # the clause is the whole line, with no assignment before it
+        self.tail: list[str] = []  # the redirections of the clause being read
 
     def run(self, text: str, depth: int = 0) -> None:
         scanned = scan(text)
         self.texts += [scanned.outer, *scanned.docs.values()]
-        for clause in _Scan(scanned.outer).run() or _crude(scanned.outer):
+        clauses = _Scan(scanned.outer).run() or _crude(scanned.outer)
+        for clause in clauses:
             own = " ".join([*clause.words, *clause.writes, *clause.reads, clause.doc])
             self.texts.append(own)
+            self.tail = [*clause.writes, *clause.reads, clause.doc]
             doc = _literal_doc(clause, scanned.docs)
             self.judged = False
-            self.clause(list(clause.words), depth, None if doc is None else f"{own} {doc}")
+            # read-only stripping only for a line that is this one command: no export, cd or assignment before it
+            self.alone = depth == 0 and len(clauses) == 1 and not (clause.words and _ASSIGN.match(clause.words[0]))
+            self.clause(list(clause.words), depth, None if doc is None else (own, doc))
             if not self.judged and not _plain_read(clause):
                 self.rest.append(own)
         for body in scanned.bodies if depth < _DEPTH else []:
             self.run(body, depth + 1)
 
-    def clause(self, words: list[str], depth: int, shown: str | None = None) -> None:
+    def clause(self, words: list[str], depth: int, shown: tuple[str, str] | None = None) -> None:
         while words and (_ASSIGN.match(words[0]) or words[0] in _LEAD):
             words.pop(0)
         if not words:
@@ -151,9 +158,12 @@ class _Look:
             args = words[at + 1 :]
             fed |= inner in FEEDERS
             if at == 0 or inner in SHELLS | EVALS | SOURCES | ONE_LINERS.keys() or inner.startswith(tuple(ONE_LINERS)):
+                self.alone = self.alone and at == 0  # an interpreter a launcher runs (`env X=1 python3`) is never alone
                 self.invoke(inner, args, fed=fed, depth=depth, shown=shown)
 
-    def invoke(self, name: str, args: list[str], *, fed: bool, depth: int, shown: str | None = None) -> None:
+    def invoke(
+        self, name: str, args: list[str], *, fed: bool, depth: int, shown: tuple[str, str] | None = None
+    ) -> None:
         if name in SHELLS:
             self.found |= fed or _shell(args)
             if depth < _DEPTH and (script := _literal(args)):
@@ -171,7 +181,12 @@ class _Look:
         else:
             on_line, stdin = _runtime(name, args)
             if stdin and not fed and shown is not None:
-                self.fed.append(shown)  # the script is the here-document: it is read, and judged by what it names
+                own, doc = shown  # the script is the here-document: it is read, and judged by what it names
+                text = judged(name, args, [doc])[0] if self.alone else doc  # less the paths a read-only script opens to read
+                self.fed.append(f"{own} {text}")
+                self.judged = True
+            elif on_line and not fed and self.alone and (code := inline(name, args)) is not None:
+                self.fed.append(" ".join([name, *code, *self.tail]))  # `python -I -c CODE`, the same read-only test
                 self.judged = True
             else:
                 self.found |= on_line or stdin

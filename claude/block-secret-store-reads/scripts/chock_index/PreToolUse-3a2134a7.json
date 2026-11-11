@@ -1,0 +1,30 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--guard",
+        "scripts/block-secret-store-reads.py"
+      ],
+      "files": {
+        "scripts/block-secret-store-reads.py": "5bd6e58272291570596864ec7fb7bb9a51000c8c780f47d01885f79d49fc4290",
+        "scripts/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/chock_scan/data_table.py": "a19b2df7efdd30e7bcc7ad96c6f82d43b972fd96172a819a04f218cdf9129b1e",
+        "scripts/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/chock_shellparse/__init__.py": "6b82117d05d291181f686c89e20b52dfa98db376b3c66e135156b304fa8c1967",
+        "scripts/chock_shellparse/args.py": "269500b30cac358c5b98594a87f325200184111d9c9f82a7ab2df62d343d8a74",
+        "scripts/chock_shellparse/parse.py": "cd6afc73613f3a40e2b4f19804b965f918eb590078c60bc59d4f59a50b49a830",
+        "scripts/chock_shellparse/quoting.py": "ee091d5620c8746ade5052049d92897e2fd859fa2d4c0e6043188b812a23e65c",
+        "scripts/chock_shellparse/targets.py": "dd7a94d66bf2daa9bbdbdf863ac440e5b28a43470c2ad0c61bb4f32c70bc86a1",
+        "scripts/chock_shellparse/wrappers.py": "545ccbbe00e42a953f8f51d0e8f47284da4c5a9e6393418f25850e3dc618e3c8",
+        "scripts/chock_shellparse/writes.py": "0dab41ca9a6f4c22ce8d046905afb9763eac39d6de6fe34b863a6d35b6fcdb83",
+        "scripts/data/metadata_endpoints.json": "2763f5b58d97596811c9d90deb9b29bd82abab7db2b50009a567d0665e70097a",
+        "scripts/data/secret_stores.json": "308d3d19d3f264cc434250a47659aefb948f459620e509cfeb2d36a57f44ae2b",
+        "scripts/secret_metadata.py": "8a06954b1bee07ef03eb009b5ef7eb953a6c096b8a362a14cf47ada2e342485f",
+        "scripts/secret_paths.py": "f575fd48d9784c857c993901ce172beedb72192589a311864f376ebd94ff1293",
+        "scripts/secret_printers.py": "b108f5a47894fbb932b4e871433a3d810183aa57c9d2b7971fe0f41c31349519",
+        "scripts/secret_readers.py": "599ac356e44d69acc648237827fe4e04723ae4a46bcb634016c199d9fd7c2294"
+      },
+      "timeout": 30
+    }
+  ]
+}

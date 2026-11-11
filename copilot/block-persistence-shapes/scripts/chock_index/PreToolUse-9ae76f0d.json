@@ -1,0 +1,29 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--guard",
+        "scripts/block-persistence-shapes.py"
+      ],
+      "files": {
+        "scripts/block-persistence-shapes.py": "2f3fe9608a9cebfa1ee9053395c717ba4c11449dffc84341be8a8e0bb538d4e9",
+        "scripts/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/chock_scan/data_table.py": "a19b2df7efdd30e7bcc7ad96c6f82d43b972fd96172a819a04f218cdf9129b1e",
+        "scripts/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/chock_shellparse/__init__.py": "6b82117d05d291181f686c89e20b52dfa98db376b3c66e135156b304fa8c1967",
+        "scripts/chock_shellparse/args.py": "269500b30cac358c5b98594a87f325200184111d9c9f82a7ab2df62d343d8a74",
+        "scripts/chock_shellparse/parse.py": "cd6afc73613f3a40e2b4f19804b965f918eb590078c60bc59d4f59a50b49a830",
+        "scripts/chock_shellparse/quoting.py": "ee091d5620c8746ade5052049d92897e2fd859fa2d4c0e6043188b812a23e65c",
+        "scripts/chock_shellparse/targets.py": "dd7a94d66bf2daa9bbdbdf863ac440e5b28a43470c2ad0c61bb4f32c70bc86a1",
+        "scripts/chock_shellparse/wrappers.py": "545ccbbe00e42a953f8f51d0e8f47284da4c5a9e6393418f25850e3dc618e3c8",
+        "scripts/chock_shellparse/writes.py": "0dab41ca9a6f4c22ce8d046905afb9763eac39d6de6fe34b863a6d35b6fcdb83",
+        "scripts/data/shapes.json": "4d1ef27f658e390edf25f70f3eefb8cac80f63733ff9953ce571730ffe64125f",
+        "scripts/shapes_background.py": "bffdca1358d4dc50e032d651004582cc7627f2b0880c2f92fc1a68cc338a6dd5",
+        "scripts/shapes_data.py": "460ded05912df659911f1a558a1515184ade57443b6ca8d160f5984461f22f20",
+        "scripts/shapes_paths.py": "9aa8553571961a5aaa424b8a45bf81e83aea96007a81efeab102c115904a65da",
+        "scripts/shapes_rules.py": "1e53d302ac0c4981a7cc93ae35fbac4361440be182578e88bb56a1af55df98ca"
+      },
+      "timeout": 30
+    }
+  ]
+}

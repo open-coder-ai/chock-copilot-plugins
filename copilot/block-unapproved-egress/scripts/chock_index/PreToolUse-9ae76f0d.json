@@ -1,0 +1,33 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--guard",
+        "scripts/block-unapproved-egress.py"
+      ],
+      "files": {
+        "scripts/block-unapproved-egress.py": "d9312f4ba6f5fce47d0c9123ca7c522e37d04af7700c962dbfb2b91b5c1e79f8",
+        "scripts/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/chock_scan/hostmatch.py": "a23d102fb32a3c93789864c8e6f8f3736996e5ae89110da619396226f405f084",
+        "scripts/chock_scan/hosts.py": "466675d60678e5b001d6ec3052bc6180db9acc7ccfa17dce60cfe56896119b5f",
+        "scripts/chock_scan/idn.py": "2ac456b9bcc7e40f10c25e38af68adfab70bf5bd73784fb88ec022bc6867ffc1",
+        "scripts/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/chock_scan/urls.py": "90735d9bbb266678eb7bcd9df1d585ae0803fd4fc2a39648b2a3e5eebbb0c9f1",
+        "scripts/chock_shellparse/__init__.py": "6b82117d05d291181f686c89e20b52dfa98db376b3c66e135156b304fa8c1967",
+        "scripts/chock_shellparse/args.py": "269500b30cac358c5b98594a87f325200184111d9c9f82a7ab2df62d343d8a74",
+        "scripts/chock_shellparse/parse.py": "cd6afc73613f3a40e2b4f19804b965f918eb590078c60bc59d4f59a50b49a830",
+        "scripts/chock_shellparse/quoting.py": "ee091d5620c8746ade5052049d92897e2fd859fa2d4c0e6043188b812a23e65c",
+        "scripts/chock_shellparse/targets.py": "dd7a94d66bf2daa9bbdbdf863ac440e5b28a43470c2ad0c61bb4f32c70bc86a1",
+        "scripts/chock_shellparse/wrappers.py": "545ccbbe00e42a953f8f51d0e8f47284da4c5a9e6393418f25850e3dc618e3c8",
+        "scripts/chock_shellparse/writes.py": "0dab41ca9a6f4c22ce8d046905afb9763eac39d6de6fe34b863a6d35b6fcdb83",
+        "scripts/data/egress-allowlist.txt": "bc4185c38d26f9cdb657c90f57adf2f0f140d50a59d472e5198c96a158ac2dda",
+        "scripts/egress_core.py": "22b7d6d92406648428d81523b594a802ca0e138c9a4eb23beda3f643464fa22a",
+        "scripts/egress_exfil.py": "bbd70050b3d601a203cfe2081cbd18f8d8f63ffb2a998bc977388c42a2ff2c31",
+        "scripts/egress_http.py": "373e490195360bd0c20fd21f6d8c52958fdea6ed17a449b9ba944d32bddcb642",
+        "scripts/egress_scan.py": "a265057eef017b2fa50cb41d05dc65a3b3f69e4db0ca512d4d92c79df30a9cfb",
+        "scripts/egress_upload.py": "42c79f24ae0ce00c5d74e2a2e5fdfdf15b362d90d30d375c2ddb68b46cb225fd"
+      },
+      "timeout": 30
+    }
+  ]
+}

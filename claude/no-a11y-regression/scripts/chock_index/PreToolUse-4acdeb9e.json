@@ -1,0 +1,19 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--gate",
+        "scripts/gate.json"
+      ],
+      "files": {
+        "scripts/gate.json": "dcea6de2ad0d3a60c1d930e0612d377b8efe6f8e49ac0d5e8871f94aa5b55788",
+        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e",
+        "scripts/implementations/data/element_requirements.json": "39a6acec2986c552a6db9da59bd52c4d156aaab62dc72778f4c9fea2986b0ea7",
+        "scripts/implementations/data/uninformative_names.json": "834f0f8a91decfd39dd80519b999294ff522d7a5b37dc98747af1b6952933082",
+        "scripts/implementations/no-a11y-regression-pre-commit.py": "3ddb18f6212a723fcf8ecfe08ad788f5cd5c3ff36bd3414d9286d8111f3aaf87",
+        "scripts/implementations/no-a11y-regression-write.py": "a72e3c0325261d0198b1e98efc5e483a4dcfa811917fd14f3233d0f63e9256ff"
+      },
+      "timeout": 30
+    }
+  ]
+}

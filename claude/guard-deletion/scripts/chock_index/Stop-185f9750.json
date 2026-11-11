@@ -1,0 +1,28 @@
+{
+  "members": [
+    {
+      "argv": [
+        "--gate",
+        "scripts/gate.json",
+        "--stop"
+      ],
+      "files": {
+        "scripts/gate.json": "f45f0ac2ac82b3feacef118815eeeb659c023e1370eec80f20ce7aa3e4880431",
+        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e",
+        "scripts/implementations/chock_scan/__init__.py": "2b874f5489fb4b059b06556e17224cc796086db1deb38eb360fa645614b3bf05",
+        "scripts/implementations/chock_scan/data_table.py": "a19b2df7efdd30e7bcc7ad96c6f82d43b972fd96172a819a04f218cdf9129b1e",
+        "scripts/implementations/chock_scan/safe_read.py": "af2e3a989ce83c39707b652fec88461ac821f6012da80f8f4ebb58a7890b6c67",
+        "scripts/implementations/data/scope.json": "bab54b50ac99a953f3c4f6bf76a615ca6615b5905eea7db8ac02aea0a2826e0c",
+        "scripts/implementations/data/shapes.json": "0cc3d78fbf669c6bbc74a3e416cddbf897493b1079c7e1b4593d8e9a393f845b",
+        "scripts/implementations/diffshape/__init__.py": "4a34b9ff92a086ad01f3fe33797de913986d375dc46421b004f15766d0a6fb2c",
+        "scripts/implementations/diffshape/changes.py": "d5daac31e22574afc9bfea70c197fff2740d2aa094ee285efeb095fd88042909",
+        "scripts/implementations/diffshape/hunks.py": "a5ecdb4237170041de711dcb106dc4bf1b19f7d6251a3e2295462ff849fe6def",
+        "scripts/implementations/diffshape/judge.py": "c3ecfbc382992bc7c32d9978f0f75f1b2db403cd6e539e740406d9f15f749cfd",
+        "scripts/implementations/diffshape/scope.py": "ccd8c6764027958a519ee467aa395f1bb71fdf7ce8cc2a94ef4d21aa8bf24583",
+        "scripts/implementations/diffshape/shapes.py": "41f5c7b4cfefa85a902837f9441f0ea570a932ab292cd140221723374d6668fd",
+        "scripts/implementations/guard-deletion-gate.py": "06a819a3f040a9090748203a1a72c012d6e82fff5a6ae3a130da738b8486ed37"
+      },
+      "timeout": 30
+    }
+  ]
+}

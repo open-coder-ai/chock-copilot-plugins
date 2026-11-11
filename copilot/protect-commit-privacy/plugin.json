@@ -1,11 +1,12 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "protect-commit-privacy",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Keeps the development conversation out of git history. Guard refuses `git commit` and `gh pr create|edit` whose message or body (inline -m/-b, -F/--file/--body-file, heredoc on -F -) holds a process-leak marker (session link, 'user asked', ...); commands behind cd, sh -c, sudo, env are read. A commit-msg hook applies the same markers to the recorded message. Narrow deny-list. No waiver: a legitimate phrase needs a person to remove it from MARKERS in the guard; an agent asks the person. [Session-enforced by the PreToolUse hook under com.github.copilot/ in clients that read that namespace (documented for VS Code agent mode); a client that ignores it, as the Agent Plugins spec tells generic clients to, gets the advisory skill only. The hook needs git, a usable bash and a Python 3.11+ (python3, python or py, whichever actually runs). With no working Python it exits 2; without git or bash, fail-open clients allow silently and fail-closed clients refuse matched commands. If the guard itself crashes or times out, the hook asks for confirmation rather than allowing silently -- VS Code agent mode honours that ask and it overrides the client's own auto-approve.]",
   "author": {
     "name": "chock-core"
   },
+  "homepage": "https://chock.sh",
   "repository": "https://github.com/open-coder-ai/chock-catalog",
   "license": "Apache-2.0",
   "keywords": [
