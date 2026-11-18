@@ -1,8 +1,8 @@
 catalog:
   repository: open-coder-ai/chock-catalog
-  ref: "38fb487f7768f3d5c06853a0d4a346587abec937"
-  sha: "38fb487f7768f3d5c06853a0d4a346587abec937"
+  ref: "e3d71d03e4dd32377ad5bc19fb6bacdfe6607ea4"
+  sha: "e3d71d03e4dd32377ad5bc19fb6bacdfe6607ea4"
 framework:
   repository: open-coder-ai/chock
-  ref: "2f3be6d04349a7ec433657e16a294efc62b51d4f"
-  sha: "2f3be6d04349a7ec433657e16a294efc62b51d4f"
+  ref: "5088f2f17df0c10b3269a68685a3500ffea6516a"
+  sha: "5088f2f17df0c10b3269a68685a3500ffea6516a"

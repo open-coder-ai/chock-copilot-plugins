@@ -8,7 +8,7 @@
       ],
       "files": {
         "scripts/gate.json": "3eec4b3f6cd295c0d899d8dd6bd3b1af6426099aa7ba717880beb512eeeadc1f",
-        "scripts/gate.py": "2bd70935229bade3e86096e1796df686ae5be02769c830d3507a82b58dad7d0e",
+        "scripts/gate.py": "d65ae785079f27cd2083c034b7c68b2248f9df41cd704d63d1a4677a5fdd3977",
         "scripts/implementations/chock_security/__init__.py": "bdc0b03295114552c29dc658d6b5e70c0dc3c0ffa88eae1f97be5f73d41b00e0",
         "scripts/implementations/chock_security/blocks.py": "d207b150817816c0c42afcf751a6a94f87942a8fedb37e922bee87f434be977f",
         "scripts/implementations/chock_security/constants.py": "ce3ba1aa4efd51ecf6a45ece35f6fa1d9d812e7cbdab5bfa2d5c0a1489a58c38",
@@ -31,9 +31,10 @@
         "scripts/implementations/chock_security/data/testing.json": "1322718566fae724019f2cffccf941b44985477677f471964c5acc781e841d86",
         "scripts/implementations/chock_security/decision.py": "b54589580fb645c402b4519039dc99a8698d0fed35c9217dbedd477cf79474b8",
         "scripts/implementations/chock_security/document.py": "31b4a9890b58be8b2f736893ee6b592bd5b7095c253fd48a0d4b2b995cb21e1b",
-        "scripts/implementations/chock_security/engine.py": "ac6b58d095ad630cc3e5ce427710997da325f855ba5d36a5894db6103222c854",
+        "scripts/implementations/chock_security/engine.py": "d069f421f04f80b6ba65b2e0274250839a97e2cf666b372d0aaddf8b4b7d737d",
         "scripts/implementations/chock_security/flow.py": "9e9bb6f42c1eaf02d8591da14c31561010efb5bb0834c7986058edef8363933d",
         "scripts/implementations/chock_security/guards.py": "028dd3821b474b4bb3d0e0400be9d6c413a955a70aea66b9554d615e122da7d9",
+        "scripts/implementations/chock_security/masking.py": "0801318fe11bf501cbac684e0cd4a0a94a2ffff0c120c18577ad2123c5a66fce",
         "scripts/implementations/chock_security/pack.py": "58c9578558da9fd47bfbd11dea46e7ca9a949334de5b6a2f126c9f4495a82f11",
         "scripts/implementations/chock_security/rules/__init__.py": "d24ea8eaaf6a7f3a3cb682fd1d1da5d608c4d415d77f346247daa0233e542b5a",
         "scripts/implementations/chock_security/rules/android/__init__.py": "d5c84ba4c7106e7d1e65a290cc0af113755d9de3103664591a84db8b59c35894",
@@ -82,7 +83,7 @@
         "scripts/implementations/chock_security/rules/crypto/crypto_securerandom_fixed_seed.py": "83ceee3817df88049c9ea94499fb47624e75f27a6bcf612d79629d2291790428",
         "scripts/implementations/chock_security/rules/crypto/crypto_short_key.py": "e5ca233abd2e4ea0665a0da8fe6c1b02b69f185bb4b8e833fea1857223f6869e",
         "scripts/implementations/chock_security/rules/crypto/crypto_static_iv_or_salt.py": "ba17132d881c60bc857a755484bb2f2935580a2acc5129259c9a659d00347d5a",
-        "scripts/implementations/chock_security/rules/crypto/crypto_tls_trust_all.py": "d4ab760149ee11b6dff589a0d7875084c8a05fd045c8f0b8d4b5c13b8f16920f",
+        "scripts/implementations/chock_security/rules/crypto/crypto_tls_trust_all.py": "fa4bd52acba8f91a66d1820037e915a13933ec2b2f0e90a470bd3a70b5aa248d",
         "scripts/implementations/chock_security/rules/crypto/crypto_weak_cipher.py": "172f8021c59641b3fdd2e779ead18d50f068a8aca451f6fb927913413b064c31",
         "scripts/implementations/chock_security/rules/crypto/crypto_weak_password_hash.py": "f287efebb8d31829f0204f52ea9d1756fd7d71e3250c0863ca643497e17acee0",
         "scripts/implementations/chock_security/rules/crypto/crypto_weak_signature_algorithm.py": "b04f4eb272f54df25da472f4f60d097a168137c34057cb1c98b409a07ecba813",
@@ -192,7 +193,7 @@
         "scripts/implementations/chock_security/rules/testing/testing_thread_sleep.py": "1a2e354917a27eec7ca6b5120605e49ecd866cf77606d8c071e793c16affd1ca",
         "scripts/implementations/chock_security/sanitizer.py": "8ce104371b0934c1d597e9b3ca1ab3b46c91ac4e6ac81215e089fb299ddbdd40",
         "scripts/implementations/chock_security/selection.py": "0a3ed3f7a52c0fc031aed7084a97fb3e7a3833b1c0d41a77850472ea8b1534e4",
-        "scripts/implementations/chock_security/source.py": "907b0e20c808b62219611f0cc236856226ba89e3b935daf11fcb8dd3dde0f163",
+        "scripts/implementations/chock_security/source.py": "5250d0419806ae73980ae18b72bfe369dcfd6342e8cfeedffeba959bf6198bb5",
         "scripts/implementations/java-security-gate.py": "98d3a18150baf9f0254a4cb04af5e04c393890ebe999c9d0cd5a713162239dbd"
       },
       "timeout": 30

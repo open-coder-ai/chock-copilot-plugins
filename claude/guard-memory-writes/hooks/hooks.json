@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-4acdeb9e.json\" --index-sha256 851dc43bdc653f06b0e82c8298746c40d8a1c11f556bf304c5bcf2e44b0f5cc0 --root \"${CLAUDE_PLUGIN_ROOT}\"",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-4acdeb9e.json\" --index-sha256 cd7838260795c00f55188256df86e40e7396d388b0b3d898896fe558f304d235 --root \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 45
           }
         ]
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/Stop-185f9750.json\" --index-sha256 d39433d7812a7e27b8192e0c146f69f11cf865023e495836514bd5735410e726 --root \"${CLAUDE_PLUGIN_ROOT}\"",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/Stop-185f9750.json\" --index-sha256 099dbf004a370e7b96e45005803192a564298f2b41e1220739ef3cd8c58e7ed4 --root \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 45
           }
         ]

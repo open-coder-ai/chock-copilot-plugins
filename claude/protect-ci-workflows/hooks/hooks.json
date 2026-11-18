@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-3a2134a7.json\" --index-sha256 b52ba4e90163c51197a3fe6dc335590634daddb79cb7cf59135adafdba32d5e0 --root \"${CLAUDE_PLUGIN_ROOT}\"",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-3a2134a7.json\" --index-sha256 07b16109b037483390daa2c9929ccf9c39bdf3824ae2388768a864671640419a --root \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 45
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-4acdeb9e.json\" --index-sha256 6cc91fcf06d8d791f7e90929c940860a5d3d331acf6314c786020ccd0dc710c0 --root \"${CLAUDE_PLUGIN_ROOT}\"",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/PreToolUse-4acdeb9e.json\" --index-sha256 b34d61d94af84977fd20a6b397ee1db1f65e5a4137429c8e08b4016d4f9054ea --root \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 45
           }
         ]
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/Stop-185f9750.json\" --index-sha256 2183996ec8a59fee63105dc4c79e2e9d890c2bf0fa074e6a8c1914fb3d4e7dd7 --root \"${CLAUDE_PLUGIN_ROOT}\"",
+            "command": "git -c 'alias.chock-sh=!set -f; IFS=; test -f $1 || { echo chock: the plugin launcher is missing, so this call cannot be checked. Refusing. >&2; exit 2; }; sh' chock-sh \"${CLAUDE_PLUGIN_ROOT}/scripts/launch.sh\" \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_code.py\" --multi \"${CLAUDE_PLUGIN_ROOT}/scripts/chock_index/Stop-185f9750.json\" --index-sha256 81bc3844a7a114ebb6dac1619ae3f36a6d7d0235c5bdf747242b110ef6b5c6ca --root \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 45
           }
         ]
